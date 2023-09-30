@@ -1,8 +1,9 @@
 # bun
 */bun.lockb
 
-# vscode
+# editor
 .vscode
+.idea
 
 # maven
 */.mvn/wrapper/maven-wrapper.jar
