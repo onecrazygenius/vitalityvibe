@@ -1,6 +1,5 @@
 # build with maven for jdk 21
-FROM openjdk:21-jdk-slim AS build
-RUN apt-get update && apt-get install -y maven
+FROM maven:3-amazoncorretto-21-al2023 as build
 WORKDIR /home/app
 COPY src /home/app/src
 COPY pom.xml /home/app
