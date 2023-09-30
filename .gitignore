@@ -1,2 +1,8 @@
 # maven
+# vscode
+.vscode
+
+# maven
+*/.mvn/wrapper/maven-wrapper.jar
+*/.mvn/wrapper/maven-wrapper.properties
 */target
