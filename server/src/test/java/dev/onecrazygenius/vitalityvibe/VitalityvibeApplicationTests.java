@@ -8,6 +8,8 @@ class VitalityvibeApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// TODO: Add tests
+		fail("Not yet implemented");
 	}
 
 }
