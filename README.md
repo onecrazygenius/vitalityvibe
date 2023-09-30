@@ -1,4 +1,6 @@
-## Commands
+# Vitality Vibe
+
+Welcome to the Vitality Vibe project. 
 
 ### Client (Next.JS)
 - `bun install` - Install dependencies
