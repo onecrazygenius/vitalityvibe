@@ -1,4 +1,10 @@
 ## Commands
+
+### Client (Next.JS)
+- `bun install` - Install dependencies
+- `bun --bun run dev` - Run the project in development
+- `bun start` - Run the project in production
+
 ### Docker
 - `docker-compose up --build` - Build and run the container
 - `docker-compose up` - Run the container
