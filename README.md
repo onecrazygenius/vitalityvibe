@@ -15,3 +15,15 @@ Welcome to the Vitality Vibe project.
 ### Server (Java/Maven/Spring)
 - `mvn clean package` - Build the project
 - `mvn spring-boot:run` - Run the project
+
+## Test commands
+
+### API (Curl)
+
+#### Auth
+Login
+- `curl -X POST -H "Content-Type: application/json" -d '{"email": "test@test.com", "password":"password"}' http://localhost:8080/auth/login`
+
+Register
+- `curl -X POST -H "Content-Type: application/json" -d '{"email": "test@test.com",
+"password":"password"}' http://localhost:8080/auth/register`

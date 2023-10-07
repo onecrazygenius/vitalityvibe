@@ -1,4 +1,12 @@
+# spring boot
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://root:1234qwer@rs0.ft3whlf.mongodb.net/vitalityvibe?retryWrites=true&w=majority
+      uri: mongodb://localhost:27017/vitalityvibe
+
+# jwt
+jwt:
+  secret: secret
+  expiration: 86400000 # 1 day
+  tokenPrefix: Bearer
+  headerString: Authorization
