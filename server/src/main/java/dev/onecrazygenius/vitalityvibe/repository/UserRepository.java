@@ -1,14 +1,15 @@
 package dev.onecrazygenius.vitalityvibe.repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
-import org.springframework.data.mongodb.repository.Query;
+import java.util.Optional;
 
-import dev.onecrazygenius.vitalityvibe.models.UserModel;
+import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+import dev.onecrazygenius.vitalityvibe.model.User;
 
 @Repository
-public interface UserRepository extends MongoRepository<UserModel, String> {
+public interface UserRepository extends MongoRepository<User, String> {
+    Optional<User> findByEmail(String email);
 
-    @Query("{'email': ?0}")
-    UserModel findByEmail(String email);
+    Boolean existsByEmail(String email);
 }

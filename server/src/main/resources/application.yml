@@ -2,7 +2,7 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/vitalityvibe
+      uri: mongodb+srv://root:1234qwer@rs0.ft3whlf.mongodb.net/vitalityvibe?retryWrites=true&w=majority
 
 # jwt
 jwt:
