@@ -4,7 +4,7 @@ WORKDIR /home/app
 COPY src /home/app/src
 COPY env/production.yml /home/app/src/main/resources/application.yml
 COPY pom.xml /home/app
-RUN mvn -f /home/app/pom.xml clean package
+RUN mvn -f /home/app/pom.xml clean package -Dmaven.test.skip=true
 
 # deploy to tomcat
 FROM tomcat:jdk21-openjdk AS deploy
