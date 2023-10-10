@@ -1,44 +1,25 @@
 package dev.onecrazygenius.vitalityvibe.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import jakarta.persistence.Entity; 
+import jakarta.persistence.GeneratedValue; 
+import jakarta.persistence.GenerationType; 
+import jakarta.persistence.Id; 
+import lombok.AllArgsConstructor; 
+import lombok.Data; 
+import lombok.NoArgsConstructor; 
 
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.annotation.Id;
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
-
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
-@Document(collection = "users")
+@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-public class User {
+public class User { 
 
-    @Id
-    private String id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	private int id; 
+	private String name; 
+	private String email; 
+	private String password; 
+	private String roles; 
 
-    @NotBlank
-    @Email
-    @Size(max = 255)
-    private String email;
-
-    @NotBlank
-    private String password;
-
-    @DBRef
-    private Set<Role> roles = new HashSet<>();
-
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-}
+} 

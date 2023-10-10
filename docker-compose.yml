@@ -1,6 +1,18 @@
 version: '3'
 
 services:
+  # MySQL Database
+  db:
+    image: mysql:8.1.0
+    ports:
+      - 3306:3306
+    restart: always
+    environment:
+      - MYSQL_DATABASE=vitalityvibe
+      - MYSQL_USER=vitalityvibe
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+
   # Java Spring Boot API
   api:
     build:
@@ -9,6 +21,8 @@ services:
     ports:
       - 8080:8080
     restart: always
+    depends_on:
+      - db
 
   # NextJS React Client
   client:

@@ -22,8 +22,7 @@ Welcome to the Vitality Vibe project.
 
 #### Auth
 Login
-- `curl -X POST -H "Content-Type: application/json" -d '{"email": "test@test.com", "password":"password"}' http://localhost:8080/api/auth/login`
+- `curl -X POST -H "Content-Type: application/json" -d '{"username":"user","password":"user"}' http://localhost:8080/auth/token`
 
 Register
-- `curl -X POST -H "Content-Type: application/json" -d '{"email": "test@test.com",
-"password":"password"}' http://localhost:8080/api/auth/signup`
+- `curl -X POST -H "Content-Type: application/json" -d '{"username":"user","password":"user","email":"user@user"}' http://localhost:8080/auth/signup`
