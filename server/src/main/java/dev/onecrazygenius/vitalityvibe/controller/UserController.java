@@ -26,11 +26,6 @@ public class UserController {
 	@Autowired
 	private AuthenticationManager authenticationManager; 
 
-	@GetMapping("/welcome") 
-	public String welcome() { 
-		return "Welcome this endpoint is not secure"; 
-	} 
-
 	@PostMapping("/signup") 
 	public String signup(@RequestBody SignupRequest signupRequest) {
 		User user = new User();
@@ -42,19 +37,7 @@ public class UserController {
 		return "User added successfully";
 	} 
 
-	@GetMapping("/user/profile") 
-	@PreAuthorize("hasAuthority('ROLE_USER')") 
-	public String userProfile() { 
-		return "Welcome to User Profile"; 
-	} 
-
-	@GetMapping("/admin/profile") 
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')") 
-	public String adminProfile() { 
-		return "Welcome to Admin Profile"; 
-	} 
-
-	@PostMapping("/token") 
+	@PostMapping("/login") 
 	public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
 		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword());
 		System.out.println(usernamePasswordAuthenticationToken);
@@ -69,6 +52,18 @@ public class UserController {
 			e.printStackTrace();
 		}
 		return "error";
+	} 
+
+	@GetMapping("/user/profile") 
+	@PreAuthorize("hasAuthority('ROLE_USER')") 
+	public String userProfile() { 
+		return "Welcome to User Profile"; 
+	} 
+
+	@GetMapping("/admin/profile") 
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')") 
+	public String adminProfile() { 
+		return "Welcome to Admin Profile"; 
 	} 
 
 } 
