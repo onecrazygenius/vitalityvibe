@@ -31,6 +31,37 @@ public class UserController {
 	public String signup(@RequestBody SignupRequest signupRequest) {
 		User user = new User();
 
+		/*
+		 * Validate signup request
+		 */
+
+		// check if user already exists
+		if (service.existsByEmail(signupRequest.getEmail())) {
+			return "User already exists";
+		}
+
+		// check if email is valid
+		if (signupRequest.getEmail().isEmpty() ||
+			!signupRequest.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+		) {
+			return "Invalid email";
+		}
+
+		// check name is valid and not empty
+		if (signupRequest.getName().isEmpty() || 
+			!signupRequest.getName().matches("^[a-zA-Z\\s]*$")
+		) {
+			return "Invalid name";
+		}
+
+		// check if password meets requirements
+		if (signupRequest.getPassword().isEmpty() ||
+			!signupRequest.getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$")
+		) {
+			return "Invalid password";
+		}
+
+		// set user details
 		user.setName(signupRequest.getName());
 		user.setEmail(signupRequest.getEmail());
 		user.setPassword(signupRequest.getPassword());

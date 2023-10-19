@@ -29,11 +29,19 @@ public class UserServiceImpl implements UserDetailsService {
 				.orElseThrow(() -> new UsernameNotFoundException("User not found " + email)); 
 	} 
 
+	/*
+	 * Check if user exists by email
+	 */
+	public boolean existsByEmail(String email) { 
+		return repository.findByEmail(email).isPresent(); 
+	}
+
+	/*
+	 * Add new user
+	 */
 	public String addUser(User user) { 
 		user.setPassword(encoder.encode(user.getPassword())); 
 		repository.save(user); 
 		return "User Added Successfully"; 
 	} 
-
-
 } 
