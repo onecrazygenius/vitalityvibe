@@ -37,7 +37,9 @@ export default function AuthenticationPage() {
           <div className="absolute inset-0 bg-zinc-900" />
           <div className="relative z-20 flex items-center text-lg font-medium">
             <Icons.logo className="mr-2 h-6 w-6" />
-            Vitality Vibe
+            <Link href="/" className="hover:text-gray-300">
+              Vitality Vibe
+            </Link>
           </div>
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
