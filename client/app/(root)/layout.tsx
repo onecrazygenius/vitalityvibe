@@ -18,11 +18,20 @@ export default async function RootLayout({
         <div className="flex h-20 items-center justify-between py-6">
           <MainNav items={heroConfig.mainNav} />
           <nav>
+            <Link 
+              href="/signup" 
+              className={cn(
+                buttonVariants({ size: "sm" }),
+                "animate-pulse"
+              )}>
+              Sign Up
+            </Link>
             <Link
               href="/login"
               className={cn(
                 buttonVariants({ variant: "secondary", size: "sm" }),
-                "px-4"
+                "px-4",
+                "ml-4"
               )}
             >
               Login

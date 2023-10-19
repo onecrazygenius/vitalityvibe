@@ -45,7 +45,7 @@ export default async function IndexPage() {
             and share it with your friends and family. 
           </p>
           <div className="space-x-4">
-            <Link href="/login" className={cn(buttonVariants({ size: "lg" }))}>
+            <Link href="/login" className={cn(buttonVariants({ size: "lg" }), "animate-pulse")}>
               Get Started
             </Link>
             <Link
@@ -58,10 +58,6 @@ export default async function IndexPage() {
               Learn More
             </Link>
           </div>
-        </div>
-        {/* Add a mouse icon to scroll down with animation */}
-        <div className="flex justify-center items-center">
-          <div className="w-5 h-7 bg-white animate-bounce rounded-full mt-5"></div>
         </div>
       </section>
       <section
