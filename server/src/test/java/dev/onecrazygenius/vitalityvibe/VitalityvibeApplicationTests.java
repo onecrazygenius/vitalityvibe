@@ -8,7 +8,7 @@ class VitalityvibeApplicationTests {
 
 	@Test
 	void contextLoads() {
-		// TODO: Add tests
+		
 	}
 
 }

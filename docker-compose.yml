@@ -1,22 +1,36 @@
 version: '3'
 
 services:
+  # MySQL Database
+  db:
+    image: mysql:8.1.0
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=vitalityvibe
+      - MYSQL_USER=vitalityvibe
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+
   # Java Spring Boot API
   api:
+    depends_on:
+      - db
     build:
       context: server
       dockerfile: Dockerfile
     ports:
       - 8080:8080
-    restart: always
+    restart: on-failure
 
   # NextJS React Client
   client:
+    depends_on:
+      - api
     build:
       context: client
       dockerfile: Dockerfile
     ports:
       - 3000:3000
-    restart: always
-    depends_on:
-      - api
+    restart: on-failure
