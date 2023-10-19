@@ -12,11 +12,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 // zod form for validation
-const signupFormSchema = z.object({
-  name: z.string().min(3).max(20),
+const loginFormSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8).max(100),
-  confirmPassword: z.string().min(8).max(100),
 });
 
 
@@ -25,18 +23,16 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirm] = useState<string>("");
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     setIsLoading(true);
 
     // validate the form
-    const formValues = { name, email, password, confirmPassword };
-    const validation = signupFormSchema.safeParse(formValues);
+    const formValues = { email, password};
+    const validation = loginFormSchema.safeParse(formValues);
 
     if (!validation.success) {
       // TODO: display error message
@@ -58,9 +54,26 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       // try to send the request to the api
       const response = await fetch(apiUrl, {
         method: "POST",
-        body: JSON.stringify({ email, name, password }),
+        body: JSON.stringify({ email, password }),
         headers
       });
+
+      // check for errors
+      if (!response.ok) {
+        // log the error
+        console.error(response.statusText);
+        setIsLoading(false);
+        return;
+      }
+
+      // check for jwt token
+      const { token } = await response.json();
+
+      // set the jwt token
+      if (token) {
+        // set the jwt token
+        localStorage.setItem("jwt", token);
+      }
 
       // handle the response
       if (response.ok) {
@@ -77,7 +90,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         setIsLoading(false);
         // reset password fields if failed
         setPassword("");
-        setConfirm("");
       }, 3000);
     }
   }
@@ -85,22 +97,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={onSubmit}>
-        <div className="grid gap-2">
-        <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="name">
-              Display Name
-            </Label>
-            <Input
-              id="name"
-              placeholder="name"
-              type="text"
-              autoCapitalize="none"
-              autoCorrect="off"
-              disabled={isLoading}
-              onChange={(event) => setName(event.target.value)}
-              value={name}
-            />
-          </div>
+        <div className="grid gap-2"> 
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
               Email
@@ -131,26 +128,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               value={password}
             />
           </div>
-          <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="password">
-              Confirm Password
-            </Label>
-            <Input
-              id="password"
-              placeholder="Confirm Password"
-              type="password"
-              autoComplete="current-password"
-              disabled={isLoading}
-              onChange={(event) => setConfirm(event.target.value)}
-              value={confirmPassword}
-            />
-          </div>
           <div className="grid gap-1" />
           <Button disabled={isLoading}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Create Account
+            Login
           </Button>
         </div>
       </form>
