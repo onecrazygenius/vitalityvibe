@@ -30,10 +30,12 @@ public class UserController {
 	@PostMapping("/signup") 
 	public String signup(@RequestBody SignupRequest signupRequest) {
 		User user = new User();
-		user.setName(signupRequest.getUsername());
-		user.setPassword(signupRequest.getPassword());
+
+		user.setName(signupRequest.getName());
 		user.setEmail(signupRequest.getEmail());
+		user.setPassword(signupRequest.getPassword());
 		user.setRoles(signupRequest.getRole());
+		
 		service.addUser(user);
 		return "User added successfully";
 	} 
@@ -41,7 +43,6 @@ public class UserController {
 	@PostMapping("/login") 
 	public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
 		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword());
-		System.out.println(usernamePasswordAuthenticationToken);
 		try {
 			Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 			if (authentication.isAuthenticated()) { 

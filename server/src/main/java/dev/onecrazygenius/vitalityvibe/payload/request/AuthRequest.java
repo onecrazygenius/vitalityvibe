@@ -9,8 +9,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthRequest { 
 
-	private String username; 
+	private String email; 
 	private String password; 
+
+	public String getUsername() { 
+		return email; 
+	}
+
+	public void setUsername(String username) { 
+		this.email = username; 
+	}
 
 }
 
