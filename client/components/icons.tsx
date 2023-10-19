@@ -1,4 +1,9 @@
-import { Moon, Sun } from "lucide-react"
+import { 
+  Moon, 
+  Sun,
+  Cross,
+  Laptop
+} from "lucide-react"
 
 type IconProps = React.HTMLAttributes<SVGElement>
 
@@ -138,5 +143,7 @@ export const Icons = {
     </svg>
   ),
   sun: Sun,
-  moon: Moon
+  moon: Moon,
+  close: Cross,
+  laptop: Laptop
 }
