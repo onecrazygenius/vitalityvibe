@@ -61,6 +61,10 @@ export default async function IndexPage() {
             </Link>
           </div>
         </div>
+        {/* Add a mouse icon to scroll down with animation */}
+        <div className="flex justify-center items-center">
+          <div className="w-5 h-7 bg-white animate-bounce rounded-full mt-5"></div>
+        </div>
       </section>
       <section
         id="features"
