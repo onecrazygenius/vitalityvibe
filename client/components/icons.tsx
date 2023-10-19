@@ -1,10 +1,11 @@
 import { 
   Moon, 
   Sun,
-  Cross,
+  X,
   Laptop,
   Award,
-  Users
+  Users,
+  Menu
 } from "lucide-react"
 
 type IconProps = React.HTMLAttributes<SVGElement>
@@ -154,7 +155,8 @@ export const Icons = {
   ),
   sun: Sun,
   moon: Moon,
-  close: Cross,
+  menu: Menu,
+  close: X,
   laptop: Laptop,
   goals: Award,
   circles: Users
