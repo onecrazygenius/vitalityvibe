@@ -38,7 +38,7 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { 
 		return http.csrf().disable()
 				.authorizeHttpRequests() 
-				.requestMatchers("/auth/signup", "/auth/login").permitAll() 
+				.requestMatchers("/api/auth/signup", "/api/auth/login").permitAll() 
 				.and() 
 				.authorizeHttpRequests().requestMatchers("/auth/user/**").authenticated() 
 				.and() 
@@ -70,6 +70,5 @@ public class SecurityConfig {
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { 
 		return config.getAuthenticationManager(); 
 	} 
-
 
 } 

@@ -1,25 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // cors
+    // cors for api routes. If NEXT_PUBLIC_API_URL is not set, it will default to http://localhost:3000
     async headers() {
         return [
-            {
-                source: '/api/:path*',
-                headers: [
-                    {
-                        key: 'Access-Control-Allow-Origin',
-                        value: '*',
-                    },
-                    {
-                        key: 'Access-Control-Allow-Methods',
-                        value: 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
-                    },
-                    {
-                        key: 'Access-Control-Allow-Headers',
-                        value: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
-                    },
-                ],
-            },
+          {
+            // matching all API routes
+            source: "/api/:path*",
+            headers: [
+              { key: "Access-Control-Allow-Credentials", value: "true" },
+              { key: "Access-Control-Allow-Origin", value: "*" },
+              { key: "Access-Control-Allow-Methods", value: "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
+              { key: "Access-Control-Allow-Headers", value: "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" },
+            ]
+          }
         ]
     },
 }

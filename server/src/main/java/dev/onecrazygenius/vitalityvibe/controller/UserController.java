@@ -13,8 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException; 
 import org.springframework.web.bind.annotation.*; 
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/auth") 
+@RequestMapping("/api/auth") 
 public class UserController { 
 
 	@Autowired
