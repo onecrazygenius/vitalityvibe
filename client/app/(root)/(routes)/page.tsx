@@ -2,6 +2,7 @@ import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
+import { Icons } from "@/components/icons"
 
 export default async function IndexPage() {
 
@@ -9,13 +10,13 @@ export default async function IndexPage() {
     <>
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
         <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
-          <Link
-            href=""
-            className="rounded-2xl bg-muted px-4 py-1.5 text-sm font-medium"
-            target="_blank"
-          >
-            Follow along on Twitter
-          </Link>
+          {/* 
+            TODO: remove currently in beta 
+          */}
+          <span className="text-xs font-bold text-white bg-teal-500 rounded-full px-2 py-1 uppercase tracking-wide">
+            v0.1.0 Beta Build
+          </span>
+
           <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
             An new way to lead a &nbsp;
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-teal-400">
@@ -24,20 +25,21 @@ export default async function IndexPage() {
             &nbsp;life.
           </h1>
           <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-            I&apos;m building a web app with Next.js 13 and open sourcing
-            everything. Follow along as we figure this out together.
+            VitalityVibe is a new way to lead a healthy life. We provide you with the tools to track your health and wellness, 
+            and share it with your friends and family. 
           </p>
           <div className="space-x-4">
             <Link href="/login" className={cn(buttonVariants({ size: "lg" }))}>
               Get Started
             </Link>
             <Link
-              href=""
-              target="_blank"
-              rel="noreferrer"
-              className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
+              href="/"
+              className={cn(
+                buttonVariants({ variant: "secondary", size: "lg" }),
+                "px-4"
+              )}
             >
-              GitHub
+              Learn More
             </Link>
           </div>
         </div>
@@ -51,9 +53,9 @@ export default async function IndexPage() {
             Features
           </h2>
           <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-            This project is an experiment to see how a modern app, with features
-            like auth, subscriptions, API routes, and static pages would work in
-            Next.js 13 app dir.
+            Vitality Vibe aims to bring the best of a healthy lifestyle and social media together.
+            We utilise tracking and connectivity to help you achieve your goals and share your progress with your friends and family. 
+            You are at the center of journey and we are here to guide you along the way.
           </p>
         </div>
         <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
@@ -145,8 +147,14 @@ export default async function IndexPage() {
         </div>
         <div className="mx-auto text-center md:max-w-[58rem]">
           <p className="leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-            Taxonomy also includes a blog and a full-featured documentation site
-            built using Contentlayer and MDX.
+            We also have guides to help you get started with your fitness journey with
+            VitalityVibe.{" "}
+            <Link
+              href="/"
+              className="underline underline-offset-4"
+            >
+              Learn more
+            </Link>
           </p>
         </div>
       </section>
@@ -156,17 +164,16 @@ export default async function IndexPage() {
             Proudly Open Source
           </h2>
           <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-            Taxonomy is open source and powered by open source software. <br />{" "}
+            VitalityVibe is open source and powered by open source software. <br />{" "}
             The code is available on{" "}
+            {/* Github button */}
             <Link
-              href=""
-              target="_blank"
-              rel="noreferrer"
+              href="/"
               className="underline underline-offset-4"
             >
-              GitHub
+              Github
+              <Icons.gitHub className="inline-block w-4 h-4 ml-1" />
             </Link>
-            .{" "}
           </p>
         </div>
       </section>

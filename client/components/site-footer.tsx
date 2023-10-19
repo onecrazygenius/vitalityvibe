@@ -1,5 +1,7 @@
 import * as React from "react"
 
+import Link from "next/link"
+
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import { ModeToggle } from "@/components/mode-toggle"
@@ -11,43 +13,15 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
         <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
           <Icons.logo />
           <p className="text-center text-sm leading-loose md:text-left">
-            Built by{" "}
-            <a
+            &copy; 2023
+            <Link
               href=""
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4"
+              className="text-primary-500 hover:text-primary-600"
             >
-              shadcn
-            </a>
-            . Hosted on{" "}
-            <a
-              href="https://vercel.com"
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4"
-            >
-              Vercel
-            </a>
-            . Illustrations by{" "}
-            <a
-              href="https://popsy.co"
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4"
-            >
-              Popsy
-            </a>
-            . The source code is available on{" "}
-            <a
-              href=""
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4"
-            >
-              GitHub
-            </a>
-            .
+              {" "}
+              VitalityVibe
+            </Link>
+            . All rights reserved.
           </p>
         </div>
         <ModeToggle />
