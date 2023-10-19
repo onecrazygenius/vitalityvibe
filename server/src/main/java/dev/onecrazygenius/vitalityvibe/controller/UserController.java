@@ -2,6 +2,7 @@ package dev.onecrazygenius.vitalityvibe.controller;
 
 import dev.onecrazygenius.vitalityvibe.payload.request.AuthRequest;
 import dev.onecrazygenius.vitalityvibe.payload.request.SignupRequest;
+import dev.onecrazygenius.vitalityvibe.payload.response.JsonResponse;
 import dev.onecrazygenius.vitalityvibe.model.User; 
 import dev.onecrazygenius.vitalityvibe.service.JwtService; 
 import dev.onecrazygenius.vitalityvibe.service.UserServiceImpl;
@@ -28,7 +29,7 @@ public class UserController {
 	private AuthenticationManager authenticationManager; 
 
 	@PostMapping("/signup") 
-	public String signup(@RequestBody SignupRequest signupRequest) {
+	public JsonResponse signup(@RequestBody SignupRequest signupRequest) {
 		User user = new User();
 
 		/*
@@ -37,28 +38,28 @@ public class UserController {
 
 		// check if user already exists
 		if (service.existsByEmail(signupRequest.getEmail())) {
-			return "User already exists";
+			return new JsonResponse("User already exists", "error", null);
 		}
 
 		// check if email is valid
 		if (signupRequest.getEmail().isEmpty() ||
 			!signupRequest.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
 		) {
-			return "Invalid email";
+			return new JsonResponse("Invalid email", "error", null);
 		}
 
 		// check name is valid and not empty
 		if (signupRequest.getName().isEmpty() || 
 			!signupRequest.getName().matches("^[a-zA-Z\\s]*$")
 		) {
-			return "Invalid name";
+			return new JsonResponse("Invalid name", "error", null);
 		}
 
 		// check if password meets requirements
 		if (signupRequest.getPassword().isEmpty() ||
 			!signupRequest.getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$")
 		) {
-			return "Invalid password";
+			return new JsonResponse("Invalid password", "error", null);
 		}
 
 		// set user details
@@ -68,26 +69,41 @@ public class UserController {
 		user.setRoles(signupRequest.getRole());
 		
 		service.addUser(user);
-		return "User added successfully";
+		return new JsonResponse("User created successfully", "success", null);
 	} 
 
 	@PostMapping("/login") 
-	public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+	public JsonResponse authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+
+		/*
+		 * Validate login request
+		 */
+
+		// check if email is valid
+		if (authRequest.getUsername().isEmpty() ||
+			!authRequest.getUsername().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+		) {
+			return new JsonResponse("Invalid email", "error", null);
+		}
+
 		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword());
 		try {
 			Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 			if (authentication.isAuthenticated()) { 
-				return jwtService.generateToken(authRequest.getUsername()); 
+				return new JsonResponse("Login successful", "success", 
+					jwtService.generateToken(authRequest.getUsername())
+				); 
 			} else { 
 				throw new UsernameNotFoundException("invalid user request !"); 
 			} 
 		} catch (Exception e) {
-			e.printStackTrace();
+			// TODO: handle exception
+			
 		}
-		return "error";
+		return new JsonResponse("Invalid credentials", "error", null);
 	} 
 
-	@GetMapping("/user/profile") 
+	@GetMapping("/profile") 
 	@PreAuthorize("hasAuthority('ROLE_USER')") 
 	public String userProfile() { 
 		return "Welcome to User Profile"; 
