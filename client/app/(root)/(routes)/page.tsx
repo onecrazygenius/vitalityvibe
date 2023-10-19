@@ -3,26 +3,24 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
+import { heroConfig } from "@/config/hero"
 
 export default async function IndexPage() {
 
-  const features = [
-    {
-      "title": "Goals",
-      "description": "Set goals and track your progress. Create a plan and stick to it.",
-      "icon": <Icons.goals className="w-12 h-12" />
-    },
-    {
-      "title": "Circles",
-      "description": "Create circles and share your progress with your friends and family.",
-      "icon": <Icons.circles className="w-12 h-12" />
-    },
-    {
-      "title": "Subscription",
-      "description": "Free and paid subscriptions using Stripe.",
-      "icon": <Icons.stripe className="w-12 h-12" />
+  const features = heroConfig.features
+
+  const getIcon = (iconType: string) => {
+    switch (iconType) {
+      case "goals":
+        return <Icons.goals className="w-12 h-12 text-foreground" />
+      case "circles":
+        return <Icons.circles className="w-12 h-12 text-foreground" />
+      case "stripe":
+        return <Icons.stripe className="w-12 h-12 text-foreground" />
+      default:
+        return <Icons.goals className="w-12 h-12 text-foreground" />
     }
-  ]
+  }
 
   return (
     <>
@@ -36,7 +34,7 @@ export default async function IndexPage() {
           </span>
 
           <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
-            An new way to lead a &nbsp;
+            A new way to lead a &nbsp;
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-teal-400">
               healthy
             </span> 
@@ -87,7 +85,7 @@ export default async function IndexPage() {
               className="relative overflow-hidden rounded-lg border bg-background p-2"
             >
               <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
-                {feature.icon}
+                {getIcon(feature.iconType)}
                 <div className="space-y-2">
                   <h3 className="font-bold">{feature.title}</h3>
                   <p className="text-sm text-muted-foreground">
