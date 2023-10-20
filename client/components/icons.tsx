@@ -4,6 +4,7 @@ import {
   X,
   Laptop,
   Award,
+  User,
   Users,
   Menu
 } from "lucide-react"
@@ -156,6 +157,7 @@ export const Icons = {
   sun: Sun,
   moon: Moon,
   menu: Menu,
+  user: User,
   close: X,
   laptop: Laptop,
   goals: Award,

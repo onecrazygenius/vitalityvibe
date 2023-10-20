@@ -1,10 +1,8 @@
-import Link from "next/link"
 
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
 import { MainNav } from "@/components/main-nav"
 import { SiteFooter } from "@/components/site-footer"
 import { dashboardConfig } from "@/config/dashboard"
+import { UserAccountNav } from "@/components/user-account-nav"
 
 export default async function RootLayout({
     children,
@@ -17,15 +15,13 @@ export default async function RootLayout({
       <header className="container z-40 bg-background">
         <div className="flex h-20 items-center justify-between py-6">
           <MainNav items={dashboardConfig.mainNav} />
-          <nav>
-            <Link 
-              href="/signup" 
-              className={cn(
-                buttonVariants({ size: "sm" })
-              )}>
-              Profile
-            </Link>
-          </nav>
+          <UserAccountNav
+            user={{
+              name: "Name",
+              image: "",
+              email: "email@email.com",
+            }}
+          />
         </div>
       </header>
       <main className="flex-1">{children}</main>
