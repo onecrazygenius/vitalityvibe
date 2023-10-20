@@ -24,7 +24,7 @@ export default async function RootLayout({
           />
         </div>
       </header>
-      <main className="flex-1">{children}</main>
+      <main className="flex w-full flex-1 flex-col overflow-hidden">{children}</main>
       <SiteFooter/>
     </div>
   )
