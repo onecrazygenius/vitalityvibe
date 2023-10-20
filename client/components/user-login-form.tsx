@@ -3,13 +3,22 @@
 import * as z from "zod";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { useToast } from "@/components/ui/use-toast"
 
 // zod form for validation
 const loginFormSchema = z.object({
@@ -17,29 +26,23 @@ const loginFormSchema = z.object({
   password: z.string().min(8).max(100),
 });
 
-
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+  const { toast } = useToast()
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const form = useForm<z.infer<typeof loginFormSchema>>({
+    resolver: zodResolver(loginFormSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
+
+  async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     setIsLoading(true);
-
-    // validate the form
-    const formValues = { email, password};
-    const validation = loginFormSchema.safeParse(formValues);
-
-    if (!validation.success) {
-      // TODO: display error message
-      console.error(validation.error);
-      setIsLoading(false);
-      return;
-    }
 
     // api url
     const apiUrl = process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/auth/signup` : "/auth/signup";
@@ -54,16 +57,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       // try to send the request to the api
       const response = await fetch(apiUrl, {
         method: "POST",
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(values),
         headers
       });
 
-      // check for errors
+      // handle the response
       if (!response.ok) {
-        // log the error
-        console.error(response.statusText);
-        setIsLoading(false);
-        return;
+        throw new Error(response.statusText);
       }
 
       // check for jwt token
@@ -75,61 +75,88 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         localStorage.setItem("jwt", token);
       }
 
-      // handle the response
-      if (response.ok) {
-        window.location.href = "/";
-        return;
-      }
+      // show success message
+      toast({
+        title: "Success",
+        description: "You have successfully logged in",
+        duration: 5000,
+      });
+
+      // redirect to the dashboard
+      window.location.href = "/dashboard";
 
     } catch (error) {
-      // log the error
-      console.error(error);
+      // toast the error
+      toast({
+        title: "Error",
+        description: (error as Error).message,
+        variant: "destructive"
+      });
     } finally {
       // clear the loading state
       setTimeout(() => {
         setIsLoading(false);
-        // reset password fields if failed
-        setPassword("");
       }, 3000);
     }
   }
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
+      <Form {...form} >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid gap-2"> 
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
-            <Input
-              id="email"
-              placeholder="name@example.com"
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading}
-              onChange={(event) => setEmail(event.target.value)}
-              value={email}
-            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel
+                   className="sr-only"
+                   htmlFor="email"
+                  >Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="email"
+                      placeholder="Email"
+                      type="email"
+                      autoCapitalize="none"
+                      autoComplete="email"
+                      autoCorrect="off"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+            )}/>    
           </div>
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="password">
-              Password
-            </Label>
-            <Input
-              id="password"
-              placeholder="Password"
-              type="password"
-              autoComplete="current-password"
-              disabled={isLoading}
-              onChange={(event) => setPassword(event.target.value)}
-              value={password}
-            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel
+                   className="sr-only"
+                   htmlFor="password"
+                  >Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="password"
+                      placeholder="Password"
+                      type="password"
+                      autoComplete="current-password"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+            )}/>
           </div>
           <div className="grid gap-1" />
-          <Button disabled={isLoading}>
+          <Button disabled={isLoading} type="submit">
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
@@ -137,6 +164,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           </Button>
         </div>
       </form>
+      </Form>
       {/* <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />

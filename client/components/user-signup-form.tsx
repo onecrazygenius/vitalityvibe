@@ -3,48 +3,55 @@
 import * as z from "zod";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { useToast } from "@/components/ui/use-toast"
 
 // zod form for validation
 const signupFormSchema = z.object({
   name: z.string().min(3).max(20),
   email: z.string().email(),
-  password: z.string().min(8).max(100),
-  confirmPassword: z.string().min(8).max(100),
+  password: z.string().min(8).max(100)
+    .regex(/[A-Z]/, "Password must contain at least 1 uppercase letter")
+    .regex(/[a-z]/, "Password must contain at least 1 lowercase letter")
+    .regex(/[0-9]/, "Password must contain at least 1 number")
+    .regex(/[^a-zA-Z0-9]/, "Password must contain at least 1 symbol"),
+  confirmPassword: z.string().min(8).max(100)
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"]
 });
-
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+  const { toast } = useToast()
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirm] = useState<string>("");
+  const form = useForm<z.infer<typeof signupFormSchema>>({
+    resolver: zodResolver(signupFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setIsLoading(true);
-
-    // validate the form
-    const formValues = { name, email, password, confirmPassword };
-    const validation = signupFormSchema.safeParse(formValues);
-
-    if (!validation.success) {
-      // TODO: display error message
-      console.error(validation.error);
-      setIsLoading(false);
-      return;
-    }
-
+  async function onSubmit(values: z.infer<typeof signupFormSchema>) {
     // api url
     const apiUrl = process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/auth/signup` : "/auth/signup";
 
@@ -58,102 +65,157 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       // try to send the request to the api
       const response = await fetch(apiUrl, {
         method: "POST",
-        body: JSON.stringify({ email, name, password }),
+        body: JSON.stringify(values),
         headers
       });
 
-      // handle the response
-      if (response.ok) {
-        window.location.href = "/";
-        return;
+      // check if the request was successful
+      if (!response.ok) {
+        throw new Error("Something went wrong");
       }
 
+      // redirect and toast the success
+      toast({
+        title: "Success",
+        description: "Account created. You can now login."
+      });
+
+      // redirect to the login page
+      window.location.href = "/login";
+
     } catch (error) {
-      // log the error
-      console.error(error);
+      // toast the error
+      toast({
+        title: "Error",
+        description: (error as Error).message,
+        variant: "destructive"
+      });
     } finally {
       // clear the loading state
       setTimeout(() => {
         setIsLoading(false);
-        // reset password fields if failed
-        setPassword("");
-        setConfirm("");
       }, 3000);
     }
   }
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
+      <Form {...form} >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid gap-2">
-        <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="name">
-              Display Name
-            </Label>
-            <Input
-              id="name"
-              placeholder="name"
-              type="text"
-              autoCapitalize="none"
-              autoCorrect="off"
-              disabled={isLoading}
-              onChange={(event) => setName(event.target.value)}
-              value={name}
+          <div className="grid gap-1">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="name" className="sr-only">
+                    Display Name
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      id="name"
+                      placeholder="Your Name"
+                      type="text"
+                      autoCapitalize="none"
+                      autoCorrect="off"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
-            <Input
-              id="email"
-              placeholder="name@example.com"
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading}
-              onChange={(event) => setEmail(event.target.value)}
-              value={email}
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="email" className="sr-only">
+                    Email
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      id="email"
+                      placeholder="Email"
+                      type="email"
+                      autoCapitalize="none"
+                      autoComplete="email"
+                      autoCorrect="off"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="password">
-              Password
-            </Label>
-            <Input
-              id="password"
-              placeholder="Password"
-              type="password"
-              autoComplete="current-password"
-              disabled={isLoading}
-              onChange={(event) => setPassword(event.target.value)}
-              value={password}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="password" className="sr-only">
+                    Password
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      id="password"
+                      placeholder="Password"
+                      type="password"
+                      autoComplete="current-password"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="password">
-              Confirm Password
-            </Label>
-            <Input
-              id="password"
-              placeholder="Confirm Password"
-              type="password"
-              autoComplete="current-password"
-              disabled={isLoading}
-              onChange={(event) => setConfirm(event.target.value)}
-              value={confirmPassword}
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="confirmPassword" className="sr-only">
+                    Confirm Password
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      id="confirmPassword"
+                      placeholder="Confirm Password"
+                      type="password"
+                      autoComplete="current-password"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
           <div className="grid gap-1" />
-          <Button disabled={isLoading}>
-            {isLoading && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            Create Account
-          </Button>
-        </div>
-      </form>
+            <Button disabled={isLoading}>
+              {isLoading && (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              Create Account
+            </Button>
+          </div>
+        </form>
+      </Form>
       {/* <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
