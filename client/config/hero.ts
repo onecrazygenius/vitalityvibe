@@ -1,7 +1,5 @@
 import { HeroConfig } from "@/types";
 
-import { Icons } from "@/components/icons";
-
 export const heroConfig: HeroConfig = {
     mainNav: [
         {

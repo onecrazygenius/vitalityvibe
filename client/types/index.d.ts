@@ -30,3 +30,7 @@ export type HeroConfig = {
     mainNav: MainNavItem[],
     features: FeatureItem[]
 }
+
+export type DashboardConfig = {
+    mainNav: MainNavItem[]
+}
