@@ -67,13 +67,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       }
 
       // check for jwt token
-      const { token } = await response.json();
+      const { data } = await response.json();
 
-      // set the jwt token
-      if (token) {
-        // set the jwt token
-        localStorage.setItem("jwt", token);
-      }
+      // save the jwt token to cookies
+      document.cookie = `token=${data}; path=/;`;
 
       // show success message
       toast({

@@ -1,8 +1,10 @@
+import PageTransition from '@/components/page-transition';
+
 const DashboardPage = () => {
     return ( 
-        <div>
-            <h1>Dashboard Page</h1>
-        </div>
+        <PageTransition>
+            <h1>Dashboard</h1>
+        </PageTransition>
     );
 }
  
