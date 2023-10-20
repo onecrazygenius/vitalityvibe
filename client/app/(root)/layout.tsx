@@ -21,8 +21,7 @@ export default async function RootLayout({
             <Link 
               href="/signup" 
               className={cn(
-                buttonVariants({ size: "sm" }),
-                "animate-pulse"
+                buttonVariants({ size: "sm" })
               )}>
               Sign Up
             </Link>

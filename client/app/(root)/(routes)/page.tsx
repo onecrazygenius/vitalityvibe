@@ -5,8 +5,15 @@ import { buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { heroConfig } from "@/config/hero"
 
-export default async function IndexPage() {
+import PageTransition from "@/components/page-transition"
 
+type IndexPageProps = {}
+type IndexPageRef = React.ForwardedRef<HTMLDivElement>
+
+export default async function IndexPage(
+  props: IndexPageProps,
+  ref: IndexPageRef
+) {
   const features = heroConfig.features
 
   const getIcon = (iconType: string) => {
@@ -23,7 +30,7 @@ export default async function IndexPage() {
   }
 
   return (
-    <>
+    <PageTransition ref={ref}>
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
         <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
           {/* 
@@ -124,6 +131,6 @@ export default async function IndexPage() {
           </p>
         </div>
       </section>
-    </>
+    </PageTransition>
   )
 }
