@@ -105,8 +105,8 @@ public class UserController {
 
 	@GetMapping("/profile") 
 	@PreAuthorize("hasAuthority('ROLE_USER')") 
-	public String userProfile() { 
-		return "Welcome to User Profile"; 
+	public JsonResponse userProfile() { 
+		return new JsonResponse("Welcome to User Profile", "success", null);
 	} 
 
 	@GetMapping("/admin/profile") 
