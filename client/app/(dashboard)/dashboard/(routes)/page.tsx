@@ -19,12 +19,12 @@ const DashboardPage = () => {
                     <div className="flex items-center space-x-2">
                         <CalendarDateRangePicker />
                         <Button>
-                            <Icons.upload className="h-4 w-4 text-muted-foreground" />
+                            <Icons.upload className="h-4 w-4 text-white" />
                         </Button>
                     </div>
                 </div>
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    <Card>
+                    <Card className="background-gradient">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
                                 Sleep
