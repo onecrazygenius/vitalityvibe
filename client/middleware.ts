@@ -3,24 +3,27 @@ import type { NextRequest } from 'next/server'
  
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
+
+    const unauthPaths = [
+        '/login',
+        '/signup',
+        '/forgot-password',
+        '/reset-password',
+        '/verify-email',
+        '/',
+    ]
+
     // check if a valid token is in cookies
     const token = request.cookies.get('token') 
+
+    if (!token && !unauthPaths.includes(request.nextUrl.pathname)) {
+        // if there is no token, redirect to login page
+        return NextResponse.redirect('/login')
+    } 
     
-    // if there is no token, redirect to the login page
-    if (!token) {
-        return NextResponse.redirect(new URL('/login', request.nextUrl).href)
-    }
-    
-    // if there is a token, dont let back to the login page
-    console.log(request.nextUrl.pathname)
-    if (request.nextUrl.pathname === '/login' 
-        || request.nextUrl.pathname === '/signup'
-        || request.nextUrl.pathname === '/forgot-password' 
-        || request.nextUrl.pathname === '/reset-password'
-        || request.nextUrl.pathname === '/verify-email'
-        || request.nextUrl.pathname === '/'
-    ) {
-        return NextResponse.redirect(new URL('/dashboard', request.nextUrl).href)
+    if (token && unauthPaths.includes(request.nextUrl.pathname)) {
+        // if there is a token, redirect to home page
+        return NextResponse.redirect(new URL('/dashboard', request.nextUrl.origin).href)
     }
 
     // if there is a token, let them visit the page

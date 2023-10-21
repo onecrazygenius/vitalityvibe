@@ -53,8 +53,9 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         <DropdownMenuItem
           className="cursor-pointer"
           onSelect={(event) => {
-            // invalidate jwt
-            // redirect to login page
+            // destroy token and redirect to login
+            document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT"
+            window.location.href = "/login"
           }}
         >
           Sign out
