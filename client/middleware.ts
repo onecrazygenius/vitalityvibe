@@ -18,11 +18,18 @@ export function middleware(request: NextRequest) {
 
     if (!token && !unauthPaths.includes(request.nextUrl.pathname)) {
         // if there is no token, redirect to login page
-        return NextResponse.redirect('/login')
+        return NextResponse.redirect(
+            new URL('/login?next=' + request.nextUrl.pathname, request.nextUrl.origin).href
+        )
     } 
     
     if (token && unauthPaths.includes(request.nextUrl.pathname)) {
-        // if there is a token, redirect to home page
+        // if there is a token check if next is set
+        if (request.nextUrl.searchParams.has('next')) {
+            return NextResponse.redirect(
+                new URL(request.nextUrl.searchParams.get('next') as string, request.nextUrl.origin).href
+            )
+        }
         return NextResponse.redirect(new URL('/dashboard', request.nextUrl.origin).href)
     }
 
@@ -32,6 +39,5 @@ export function middleware(request: NextRequest) {
  
 // See "Matching Paths" below to learn more
 export const config = {
-    // matcher all
-    matcher: '/:path*'
+    matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 }

@@ -69,6 +69,19 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       // check for jwt token
       const jwt = await response.json();
 
+      // check for jwt token
+      if (!jwt.data) {
+        // create a form error
+        form.setError("email", {
+          type: "manual",
+          message: "Invalid email or password",
+        });
+
+        // exit early
+        setIsLoading(false);
+        return;
+      }
+
       // save the jwt token to cookies
       document.cookie = `token=${jwt.data}; path=/;`;
 
