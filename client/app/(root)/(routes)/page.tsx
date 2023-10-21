@@ -14,6 +14,7 @@ export default async function IndexPage(
   props: IndexPageProps,
   ref: IndexPageRef
 ) {
+
   const features = heroConfig.features
 
   const getIcon = (iconType: string) => {

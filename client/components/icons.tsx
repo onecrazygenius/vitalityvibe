@@ -9,7 +9,8 @@ import {
   Menu,
   Upload,
   Activity,
-  Coffee
+  Coffee,
+  Cookie
 } from "lucide-react"
 
 type IconProps = React.HTMLAttributes<SVGElement>
@@ -169,4 +170,5 @@ export const Icons = {
   exercise: Activity,
   meals: Coffee,
   upload: Upload,
+  cookie: Cookie,
 }

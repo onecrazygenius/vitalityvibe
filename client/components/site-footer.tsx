@@ -1,12 +1,29 @@
-import * as React from "react"
+"use client"
 
+import {useEffect} from "react"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import { ModeToggle } from "@/components/mode-toggle"
+import { CookieConsent } from "@/components/cookie-consent"
+import { useCookieModal } from "@/hooks/use-cookie-modal"
 
 export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
+  const onOpen = useCookieModal((state) => state.onOpen);
+  const isOpen = useCookieModal((state) => state.isOpen);
+
+  // try get cookie from browser
+  useEffect(() => {
+    const cookie = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("cookie="));
+
+    if (!cookie) {
+      onOpen();
+    }
+  }, [onOpen]);
+
   return (
     <footer className={cn(className)}>
       <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
@@ -24,7 +41,10 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
             . All rights reserved.
           </p>
         </div>
-        <ModeToggle />
+        <div className="flex items-center justify-center gap-4">
+          <CookieConsent />
+          <ModeToggle />
+        </div>
       </div>
     </footer>
   )
