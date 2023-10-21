@@ -45,7 +45,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     setIsLoading(true);
 
     // api url
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/auth/signup` : "/auth/signup";
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/auth/login` : "/auth/login";
 
     try {
 
@@ -67,10 +67,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       }
 
       // check for jwt token
-      const { data } = await response.json();
+      const jwt = await response.json();
 
       // save the jwt token to cookies
-      document.cookie = `token=${data}; path=/;`;
+      document.cookie = `token=${jwt.data}; path=/;`;
 
       // show success message
       toast({
