@@ -39,29 +39,20 @@ public class JwtService {
 	} 
 
 	public String extractEmail(String token) { 
-		return Jwts
-				.parser() 
-				.setSigningKey(getSignKey()) 
-				.parseClaimsJws(token) 
-				.getBody() 
-				.getSubject();
-	} 
-
-	private Claims extractAllClaims(String token) { 
-		return Jwts 
-				.parser() 
-				.setSigningKey(getSignKey()) 
-				.parseClaimsJws(token) 
-				.getBody(); 
-	} 
+		return extractClaim(token, Claims::getSubject); 
+	}
 
 	public Date extractExpiration(String token) { 
-		return Jwts
-				.parser() 
-				.setSigningKey(getSignKey()) 
-				.parseClaimsJws(token) 
-				.getBody() 
-				.getExpiration();
+		return extractClaim(token, Claims::getExpiration); 
+	}
+
+	public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) { 
+		final Claims claims = extractAllClaims(token); 
+		return claimsResolver.apply(claims); 
+	}
+
+	private Claims extractAllClaims(String token) { 
+		return Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody(); 
 	}
 
 	private Boolean isTokenExpired(String token) { 

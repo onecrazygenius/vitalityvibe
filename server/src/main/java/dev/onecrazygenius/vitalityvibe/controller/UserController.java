@@ -6,6 +6,7 @@ import dev.onecrazygenius.vitalityvibe.payload.response.JsonResponse;
 import dev.onecrazygenius.vitalityvibe.model.User; 
 import dev.onecrazygenius.vitalityvibe.service.JwtService; 
 import dev.onecrazygenius.vitalityvibe.service.UserServiceImpl;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired; 
 import org.springframework.security.access.prepost.PreAuthorize; 
 import org.springframework.security.authentication.AuthenticationManager; 
@@ -13,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication; 
 import org.springframework.security.core.userdetails.UsernameNotFoundException; 
 import org.springframework.web.bind.annotation.*; 
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -106,7 +108,24 @@ public class UserController {
 	@GetMapping("/profile") 
 	@PreAuthorize("hasAuthority('ROLE_USER')") 
 	public JsonResponse userProfile() { 
-		return new JsonResponse("Welcome to User Profile", "success", null);
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (principal instanceof UserDetails) {
+			UserDetails userDetails = (UserDetails) principal;
+
+			// Attempt to extract the email from the user details
+			String email = userDetails.getUsername();
+			// Add some logging to help diagnose the issue
+			System.out.println("Extracted email: " + email);
+
+			// Get user by email, if user exists
+			User user = service.getUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found " + email));
+
+			return new JsonResponse("User profile", "success", user);
+		} else {
+			// Handle the case where the principal is not of the expected type
+			return new JsonResponse("User profile", "error", "Invalid user principal");
+		}
 	} 
 
 	@GetMapping("/admin/profile") 
