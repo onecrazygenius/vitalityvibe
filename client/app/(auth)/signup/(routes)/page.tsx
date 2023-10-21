@@ -18,11 +18,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-export default function AuthenticationPage() {
+import PageTransition from "@/components/page-transition"
+
+type AuthenticationPageProps = {}
+type AuthenticationPageRef = React.ForwardedRef<HTMLDivElement>
+
+export default function AuthenticationPage(
+  props: AuthenticationPageProps,
+  ref: AuthenticationPageRef
+) {
   const { setTheme } = useTheme()
 
   return (
-    <>
+    <PageTransition ref={ref}>
       <div className="container relative hidden h-full flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 min-h-screen">
         <Link
           href="/login"
@@ -111,6 +119,6 @@ export default function AuthenticationPage() {
           </DropdownMenu>
         </div>
       </div>
-    </>
+    </PageTransition>
   )
 }

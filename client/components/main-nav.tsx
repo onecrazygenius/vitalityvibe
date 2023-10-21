@@ -7,34 +7,16 @@ import { useSelectedLayoutSegment } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import { MobileNav } from "@/components/mobile-nav"
+import { MainNavItem } from "@/types"
 
 interface MainNavProps {
+  items?: MainNavItem[]
   children?: React.ReactNode
 }
 
-export function MainNav({ children }: MainNavProps) {
+export function MainNav({ items, children }: MainNavProps) {
   const segment = useSelectedLayoutSegment()
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false)
-
-  const items = [
-    {
-      title: "Home",
-      href: "/",
-      disabled: true,
-    },
-    {
-      title: "About",
-      href: "/about",
-    },
-    {
-      title: "Contact",
-      href: "/contact",
-    },
-    {
-      title: "Login",
-      href: "/login",
-    },
-  ]
 
   return (
     <div className="flex gap-6 md:gap-10">
@@ -68,7 +50,6 @@ export function MainNav({ children }: MainNavProps) {
         onClick={() => setShowMobileMenu(!showMobileMenu)}
       >
         {showMobileMenu ? <Icons.close /> : <Icons.logo />}
-        <span className="font-bold">Menu</span>
       </button>
       {showMobileMenu && items && (
         <MobileNav items={items}>{children}</MobileNav>

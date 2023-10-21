@@ -40,7 +40,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests() 
 				.requestMatchers("/api/auth/signup", "/api/auth/login").permitAll() 
 				.and() 
-				.authorizeHttpRequests().requestMatchers("/auth/user/**").authenticated() 
+				.authorizeHttpRequests().requestMatchers("/api/auth/**").authenticated() 
 				.and() 
 				.authorizeHttpRequests().requestMatchers("/auth/admin/**").authenticated() 
 				.and() 

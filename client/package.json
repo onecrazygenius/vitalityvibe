@@ -40,6 +40,7 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
+    "framer-motion": "^10.16.4",
     "lucide-react": "^0.279.0",
     "next": "latest",
     "next-themes": "^0.2.1",
@@ -49,7 +50,8 @@
     "react-hook-form": "^7.46.2",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.22.2"
+    "zod": "^3.22.2",
+    "zustand": "^4.4.3"
   },
   "devDependencies": {
     "typescript": "latest",

@@ -2,6 +2,7 @@
 
 import { ThemeProvider } from '@/providers/theme-provider'
 import { ToastProvider } from '@/providers/toast-provider'
+import { ModalProvider } from '@/providers/modal-provider'
 
 export function Providers({ 
     children,
@@ -15,6 +16,7 @@ export function Providers({
             enableSystem
         >
             <ToastProvider />
+            <ModalProvider />
             {children}
         </ThemeProvider>
     )

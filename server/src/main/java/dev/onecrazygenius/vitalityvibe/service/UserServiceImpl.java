@@ -44,4 +44,14 @@ public class UserServiceImpl implements UserDetailsService {
 		repository.save(user); 
 		return "User Added Successfully"; 
 	} 
+
+	/*
+	 * Get user by email
+	 */
+	public Optional<User> getUserByEmail(String email) {
+		return repository.findByEmail(email).map(user -> {
+			user.setPassword(null);
+			return user;
+		});
+	}
 } 

@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { MainNav } from "@/components/main-nav"
 import { SiteFooter } from "@/components/site-footer"
+import { heroConfig } from "@/config/hero"
 
 export default async function RootLayout({
     children,
@@ -15,13 +16,21 @@ export default async function RootLayout({
     <div className="flex min-h-screen flex-col">
       <header className="container z-40 bg-background">
         <div className="flex h-20 items-center justify-between py-6">
-          <MainNav/>
+          <MainNav items={heroConfig.mainNav} />
           <nav>
+            <Link 
+              href="/signup" 
+              className={cn(
+                buttonVariants({ size: "sm" })
+              )}>
+              Sign Up
+            </Link>
             <Link
               href="/login"
               className={cn(
                 buttonVariants({ variant: "secondary", size: "sm" }),
-                "px-4"
+                "px-4",
+                "ml-4"
               )}
             >
               Login
