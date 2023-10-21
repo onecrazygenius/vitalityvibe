@@ -19,6 +19,7 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import { useCookieModal } from "@/hooks/use-cookie-modal";
+import { useToast } from "@/components/ui/use-toast"
 
 const schema = z.object({
     essential: z.boolean(),
@@ -29,6 +30,7 @@ const schema = z.object({
 export function CookieModal() {
     const cookieModal = useCookieModal();
     const [loading, setLoading] = useState(false)
+    const { toast } = useToast()
 
     const cookie = document.cookie
         .split("; ")
@@ -60,6 +62,12 @@ export function CookieModal() {
             marketing: data.marketing,
         }
         document.cookie = `cookie=${JSON.stringify(cookie)};max-age=31536000;path=/;`
+
+        toast({
+            title: "Cookie Preferences Saved",
+            description: "Your cookie preferences have been saved.",
+            variant: "success",
+        })
 
         setTimeout(() => {
             setLoading(false)
