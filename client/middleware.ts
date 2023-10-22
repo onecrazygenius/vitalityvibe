@@ -6,28 +6,18 @@ export default withAuth(
   async function middleware(req) {
     const token = await getToken({ req })
     const isAuth = !!token
-    const isAuthPage =
-      req.nextUrl.pathname.startsWith("/login") ||
-      req.nextUrl.pathname.startsWith("/signup")
 
-    if (isAuthPage) {
-      if (isAuth) {
-        return NextResponse.redirect(new URL("/dashboard", req.url))
-      }
+    const nonAuthPages = ["/", "/login", "/signup"]
 
-      return null
+    if (!isAuth && !nonAuthPages.includes(req.nextUrl.pathname)) {
+      return NextResponse.redirect(new URL("/", req.nextUrl))
     }
 
-    if (!isAuth) {
-      let from = req.nextUrl.pathname;
-      if (req.nextUrl.search) {
-        from += req.nextUrl.search;
-      }
-
-      return NextResponse.redirect(
-        new URL(`/login?from=${encodeURIComponent(from)}`, req.url)
-      );
+    if (isAuth && nonAuthPages.includes(req.nextUrl.pathname)) {
+      return NextResponse.redirect(new URL("/dashboard", req.nextUrl))
     }
+
+    return null
   },
   {
     callbacks: {
@@ -42,5 +32,5 @@ export default withAuth(
 )
 
 export const config = {
-    matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 }
