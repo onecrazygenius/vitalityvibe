@@ -1,8 +1,10 @@
 package dev.onecrazygenius.vitalityvibe.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import dev.onecrazygenius.vitalityvibe.payload.request.AuthRequest;
 import dev.onecrazygenius.vitalityvibe.payload.request.SignupRequest;
-import dev.onecrazygenius.vitalityvibe.payload.response.JsonResponse;
 import dev.onecrazygenius.vitalityvibe.model.User; 
 import dev.onecrazygenius.vitalityvibe.service.JwtService; 
 import dev.onecrazygenius.vitalityvibe.service.UserServiceImpl;
@@ -15,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException; 
 import org.springframework.web.bind.annotation.*; 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.ResponseEntity;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -31,7 +34,7 @@ public class UserController {
 	private AuthenticationManager authenticationManager; 
 
 	@PostMapping("/signup") 
-	public JsonResponse signup(@RequestBody SignupRequest signupRequest) {
+	public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest) {
 		User user = new User();
 
 		/*
@@ -40,28 +43,29 @@ public class UserController {
 
 		// check if user already exists
 		if (service.existsByEmail(signupRequest.getEmail())) {
-			return new JsonResponse("User already exists", "error", null);
+			// return a bad request response
+			return ResponseEntity.badRequest().body("User already exists");
 		}
 
 		// check if email is valid
 		if (signupRequest.getEmail().isEmpty() ||
 			!signupRequest.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
 		) {
-			return new JsonResponse("Invalid email", "error", null);
+			return ResponseEntity.badRequest().body("Invalid email");
 		}
 
 		// check name is valid and not empty
 		if (signupRequest.getName().isEmpty() || 
 			!signupRequest.getName().matches("^[a-zA-Z\\s]*$")
 		) {
-			return new JsonResponse("Invalid name", "error", null);
+			return ResponseEntity.badRequest().body("Invalid name");
 		}
 
 		// check if password meets requirements
 		if (signupRequest.getPassword().isEmpty() ||
 			!signupRequest.getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$")
 		) {
-			return new JsonResponse("Invalid password", "error", null);
+			return ResponseEntity.badRequest().body("Invalid password");
 		}
 
 		// set user details
@@ -71,11 +75,12 @@ public class UserController {
 		user.setRoles(signupRequest.getRole());
 		
 		service.addUser(user);
-		return new JsonResponse("User created successfully", "success", null);
+		// return a success response
+		return ResponseEntity.ok("User registered successfully");
 	} 
 
 	@PostMapping("/login") 
-	public JsonResponse authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+	public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
 
 		/*
 		 * Validate login request
@@ -85,29 +90,28 @@ public class UserController {
 		if (authRequest.getUsername().isEmpty() ||
 			!authRequest.getUsername().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
 		) {
-			return new JsonResponse("Invalid email", "error", null);
+			return ResponseEntity.badRequest().body("Invalid email");
 		}
 
 		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword());
 		try {
 			Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 			if (authentication.isAuthenticated()) { 
-				return new JsonResponse("Login successful", "success", 
-					jwtService.generateToken(authRequest.getUsername())
-				); 
+				Map<String, String> map = new HashMap<>();
+				map.put("token", jwtService.generateToken(authRequest.getUsername()));
+				return ResponseEntity.ok(map);
 			} else { 
 				throw new UsernameNotFoundException("invalid user request !"); 
 			} 
 		} catch (Exception e) {
 			// TODO: handle exception
-			
+			return ResponseEntity.badRequest().body("Invalid login request");
 		}
-		return new JsonResponse("Invalid credentials", "error", null);
 	} 
 
 	@GetMapping("/profile") 
 	@PreAuthorize("hasAuthority('ROLE_USER')") 
-	public JsonResponse userProfile() { 
+	public ResponseEntity<?> userProfile() { 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		if (principal instanceof UserDetails) {
@@ -121,10 +125,15 @@ public class UserController {
 			// Get user by email, if user exists
 			User user = service.getUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found " + email));
 
-			return new JsonResponse("User profile", "success", user);
+			// Return the user profile as a map
+			Map<String, Object> profile = new HashMap<>();
+			profile.put("name", user.getName());
+			profile.put("email", user.getEmail());
+			profile.put("roles", user.getRoles());
+			return ResponseEntity.ok(profile);
 		} else {
 			// Handle the case where the principal is not of the expected type
-			return new JsonResponse("User profile", "error", "Invalid user principal");
+			return ResponseEntity.badRequest().body("Invalid user profile request");
 		}
 	} 
 

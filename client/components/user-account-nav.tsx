@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { signOut } from "next-auth/react"
 
 import {
   DropdownMenu,
@@ -53,9 +54,8 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         <DropdownMenuItem
           className="cursor-pointer"
           onSelect={(event) => {
-            // destroy token and redirect to login
-            document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT"
-            window.location.href = "/login"
+            event.preventDefault()
+            signOut()
           }}
         >
           Sign out

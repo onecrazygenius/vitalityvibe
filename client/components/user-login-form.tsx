@@ -4,6 +4,7 @@ import * as z from "zod";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { signIn } from "next-auth/react"
 
 import { cn } from "@/lib/utils";
 
@@ -44,70 +45,31 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     setIsLoading(true);
 
-    // api url
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/auth/login` : "/auth/login";
+    const { email, password } = values;
 
-    try {
+    const result = await signIn('credentials', {
+      email,
+      password,
+      redirect: false,
+      callbackUrl: `${window.location.origin}/dashboard`
+    })
 
-      // set the headers
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
-      headers.append("Accept", "application/json");
-
-      // try to send the request to the api
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        body: JSON.stringify(values),
-        headers
-      });
-
-      // handle the response
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-
-      // check for jwt token
-      const jwt = await response.json();
-
-      // check for jwt token
-      if (!jwt.data) {
-        // create a form error
-        form.setError("email", {
-          type: "manual",
-          message: "Invalid email or password",
-        });
-
-        // exit early
-        setIsLoading(false);
-        return;
-      }
-
-      // save the jwt token to cookies
-      document.cookie = `token=${jwt.data}; path=/;`;
-
-      // show success message
-      toast({
-        title: "Success",
-        description: "You have successfully logged in",
-        duration: 5000,
-      });
-
-      // redirect to the dashboard
-      window.location.href = "/dashboard";
-
-    } catch (error) {
-      // toast the error
+    if (result?.error) {
       toast({
         title: "Error",
-        description: (error as Error).message,
-        variant: "destructive"
+        description: result.error,
+        variant: "destructive",
       });
-    } finally {
-      // clear the loading state
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 3000);
+
+      setIsLoading(false);
+    } else {
+      toast({
+        title: "Success",
+        description: JSON.stringify(result),
+      });
     }
+
+    setIsLoading(false);
   }
 
   return (
