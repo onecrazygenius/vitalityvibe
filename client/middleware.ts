@@ -1,43 +1,46 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
- 
-// This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
+import { getToken } from "next-auth/jwt"
+import { withAuth } from "next-auth/middleware"
+import { NextResponse } from "next/server"
 
-    const unauthPaths = [
-        '/login',
-        '/signup',
-        '/forgot-password',
-        '/reset-password',
-        '/verify-email',
-        '/',
-    ]
+export default withAuth(
+  async function middleware(req) {
+    const token = await getToken({ req })
+    const isAuth = !!token
+    const isAuthPage =
+      req.nextUrl.pathname.startsWith("/login") ||
+      req.nextUrl.pathname.startsWith("/signup")
 
-    // check if a valid token is in cookies
-    const token = request.cookies.get('token') 
+    if (isAuthPage) {
+      if (isAuth) {
+        return NextResponse.redirect(new URL("/dashboard", req.url))
+      }
 
-    if (!token && !unauthPaths.includes(request.nextUrl.pathname)) {
-        // if there is no token, redirect to login page
-        return NextResponse.redirect(
-            new URL('/login?next=' + request.nextUrl.pathname, request.nextUrl.origin).href
-        )
-    } 
-    
-    if (token && unauthPaths.includes(request.nextUrl.pathname)) {
-        // if there is a token check if next is set
-        if (request.nextUrl.searchParams.has('next')) {
-            return NextResponse.redirect(
-                new URL(request.nextUrl.searchParams.get('next') as string, request.nextUrl.origin).href
-            )
-        }
-        return NextResponse.redirect(new URL('/dashboard', request.nextUrl.origin).href)
+      return null
     }
 
-    // if there is a token, let them visit the page
-    return NextResponse.next()
-}
- 
-// See "Matching Paths" below to learn more
+    if (!isAuth) {
+      let from = req.nextUrl.pathname;
+      if (req.nextUrl.search) {
+        from += req.nextUrl.search;
+      }
+
+      return NextResponse.redirect(
+        new URL(`/login?from=${encodeURIComponent(from)}`, req.url)
+      );
+    }
+  },
+  {
+    callbacks: {
+      async authorized() {
+        // This is a work-around for handling redirect on auth pages.
+        // We return true here so that the middleware function above
+        // is always called.
+        return true
+      },
+    },
+  }
+)
+
 export const config = {
     matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 }

@@ -5,7 +5,7 @@ import { useTheme } from "next-themes"
 
 import { cn } from "@/lib/utils"
 
-import { UserAuthForm } from "@/components/user-login-form"
+import { UserAuthForm } from "@/components/form/user-login-form"
 import { Icons } from "@/components/icons"
 import { 
   Button,

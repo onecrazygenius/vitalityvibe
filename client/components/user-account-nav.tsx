@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { signOut } from "next-auth/react"
 
 import {
   DropdownMenu,
@@ -10,16 +11,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { UserAvatar } from "@/components/user-avatar"
+import { useSession } from "next-auth/react"
 
-interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
-  user:  {
-    name: string
-    image: string
-    email: string
-  }
-}
+export function UserAccountNav() {
+  // get user from next-auth session
+  const { data: session } = useSession()
 
-export function UserAccountNav({ user }: UserAccountNavProps) {
+  if (!session?.user) return null
+  const user = session.user
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -41,21 +41,14 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/dashboard">Dashboard</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard/billing">Billing</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard/settings">Settings</Link>
+          <Link href="/user/settings">Settings</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="cursor-pointer"
           onSelect={(event) => {
-            // destroy token and redirect to login
-            document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT"
-            window.location.href = "/login"
+            event.preventDefault()
+            signOut()
           }}
         >
           Sign out

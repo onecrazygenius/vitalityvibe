@@ -52,50 +52,33 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   });
 
   async function onSubmit(values: z.infer<typeof signupFormSchema>) {
-    // api url
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/auth/signup` : "/auth/signup";
+    setIsLoading(true);
 
-    try {
+    const { name, email, password } = values;
 
-      // set the headers
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
-      headers.append("Accept", "application/json");
-
-      // try to send the request to the api
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        body: JSON.stringify(values),
-        headers
-      });
-
-      // check if the request was successful
-      if (!response.ok) {
-        throw new Error("Something went wrong");
+    // next-auth signup
+    const result = await fetch('/api/auth/signup', {
+      method: 'POST',
+      body: JSON.stringify({ name, email, password }),
+      headers: {
+        'Content-Type': 'application/json'
       }
+    })
 
-      // redirect and toast the success
-      toast({
-        title: "Success",
-        description: "Account created. You can now login."
-      });
-
-      // redirect to the login page
-      window.location.href = "/login";
-
-    } catch (error) {
-      // toast the error
+    if (!result.ok) {
       toast({
         title: "Error",
-        description: (error as Error).message,
-        variant: "destructive"
+        description: result.statusText,
+        variant: "destructive",
       });
-    } finally {
-      // clear the loading state
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 3000);
+    } else {
+      toast({
+        title: "Success",
+        description: JSON.stringify(result),
+      });
     }
+
+    setIsLoading(false);
   }
 
   return (
