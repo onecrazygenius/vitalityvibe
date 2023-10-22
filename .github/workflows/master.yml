@@ -14,6 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: CD into project
+        run: cd ${{ github.repository }}/client
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
