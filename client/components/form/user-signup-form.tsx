@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { useToast } from "@/components/ui/use-toast"
+import { useRouter } from "next/navigation"
 
 // zod form for validation
 const signupFormSchema = z.object({
@@ -38,6 +39,7 @@ const signupFormSchema = z.object({
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+  const router = useRouter()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -56,8 +58,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     const { name, email, password } = values;
 
+    const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"
+
     // next-auth signup
-    const result = await fetch('/api/auth/signup', {
+    const result = await fetch(url + '/auth/signup', {
       method: 'POST',
       body: JSON.stringify({ name, email, password }),
       headers: {
@@ -65,20 +69,26 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       }
     })
 
-    if (!result.ok) {
+    if (!result.ok) {      
       toast({
         title: "Error",
-        description: result.statusText,
+        description: JSON.stringify(result),
         variant: "destructive",
       });
     } else {
-      toast({
-        title: "Success",
-        description: JSON.stringify(result),
-      });
+      setTimeout(() => {
+        setIsLoading(false);
+        toast({
+          title: "Account Created",
+          description: "You have signed up!",
+          duration: 5000,
+        });
+      }, 500);
     }
 
-    setIsLoading(false);
+    setTimeout(() => {
+      router.push("/dashboard");
+    }, 1000);
   }
 
   return (

@@ -1,5 +1,4 @@
 "use client"
-
 import { getSession } from 'next-auth/react';
 
 const fetchClient = async (url, options) => {
