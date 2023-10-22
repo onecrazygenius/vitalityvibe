@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator"
-import { ProfileForm } from "@/components/profile-form"
+import { ProfileForm } from "@/components/form/profile-form"
 
 import PageTransition from "@/components/page-transition"
 import { getServerSession } from "next-auth";
