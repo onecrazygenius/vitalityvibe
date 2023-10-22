@@ -74,11 +74,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           description: "You have successfully logged in.",
           duration: 5000,
         });
-      }, 1000);
+      }, 500);
   
       setTimeout(() => {
         router.push("/dashboard");
-      }, 2000);
+      }, 1000);
     }
 
   }
