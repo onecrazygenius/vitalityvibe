@@ -46,8 +46,7 @@ export function UserAccountNav() {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="cursor-pointer"
-          onSelect={(event) => {
-            event.preventDefault()
+          onSelect={() => {
             signOut()
           }}
         >
