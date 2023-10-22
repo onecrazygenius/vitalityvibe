@@ -27,10 +27,31 @@ export const authOptions = {
                     const parsed = await response.json();
                     const jwt = parsed?.token;
 
-                    return {
-                        ...credentials,
-                        jwt,
+                    // get user info
+                    const userResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/profile`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${jwt}`,
+                        },
+                    });
+
+                    if (!userResponse.ok) {
+                        // invalid credentials
+                        return null;
                     }
+
+                    const userParsed = await userResponse.json();
+
+                    if (!userParsed) {
+                        // no user
+                        return null;
+                    }
+
+                    return {
+                        jwt,
+                        ...userParsed,
+                    };
                 } catch (error) {
                     return null;
                 }

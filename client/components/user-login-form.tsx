@@ -1,7 +1,7 @@
 "use client"
 
 import * as z from "zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react"
@@ -20,6 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { useToast } from "@/components/ui/use-toast"
+import { useRouter } from "next/navigation"
 
 // zod form for validation
 const loginFormSchema = z.object({
@@ -30,6 +31,7 @@ const loginFormSchema = z.object({
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+  const router = useRouter()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -59,17 +61,25 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         title: "Error",
         description: result.error,
         variant: "destructive",
+        duration: 5000,
       });
 
       setIsLoading(false);
-    } else {
-      toast({
-        title: "Success",
-        description: JSON.stringify(result),
-      });
     }
 
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+      toast({
+        title: "Success",
+        description: "You have successfully logged in.",
+        duration: 5000,
+      });
+    }, 1000);
+
+    setTimeout(() => {
+      router.push("/dashboard");
+    }, 2000);
+
   }
 
   return (

@@ -1,10 +1,12 @@
+"use client"
+
 import { getSession } from 'next-auth/react';
 
 const fetchClient = async (url, options) => {
     const session = await getSession();
 
     if (!session) {
-        throw new Error('Not authenticated');
+        return null;
     }
 
     return fetch(url, {

@@ -11,16 +11,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { UserAvatar } from "@/components/user-avatar"
+import { useSession } from "next-auth/react"
 
-interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
-  user:  {
-    name: string
-    image: string
-    email: string
-  }
-}
+export function UserAccountNav() {
+  // get user from next-auth session
+  const { data: session } = useSession()
 
-export function UserAccountNav({ user }: UserAccountNavProps) {
+  if (!session?.user) return null
+  const user = session.user
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
