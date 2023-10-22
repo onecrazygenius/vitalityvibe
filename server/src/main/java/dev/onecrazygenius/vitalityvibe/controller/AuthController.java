@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dev.onecrazygenius.vitalityvibe.payload.request.AuthRequest;
-import dev.onecrazygenius.vitalityvibe.payload.request.SignupRequest;
+import dev.onecrazygenius.vitalityvibe.payload.request.SignUpRequest;
 import dev.onecrazygenius.vitalityvibe.model.User; 
 import dev.onecrazygenius.vitalityvibe.service.JwtService; 
 import dev.onecrazygenius.vitalityvibe.service.UserServiceImpl;
@@ -34,7 +34,7 @@ public class AuthController {
 	private AuthenticationManager authenticationManager; 
 
 	@PostMapping("/signup") 
-	public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest) {
+	public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signupRequest) {
 		User user = new User();
 
 		/*
