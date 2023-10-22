@@ -10,17 +10,6 @@ on:
 jobs:
   client-build:
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_USER: vitalityvibe
-          MYSQL_PASSWORD: password
-          MYSQL_DATABASE: vitalityvibe
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - uses: actions/checkout@v3
@@ -40,6 +29,17 @@ jobs:
 
   server-test:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_USER: vitalityvibe
+          MYSQL_PASSWORD: password
+          MYSQL_DATABASE: vitalityvibe
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - uses: actions/checkout@v3
