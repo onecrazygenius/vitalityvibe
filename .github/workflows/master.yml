@@ -8,14 +8,17 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  client-build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: CD into project
+      - name: Change Dir into project
         run: cd ./client
+
+      - name: list files
+        run: ls -la
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
