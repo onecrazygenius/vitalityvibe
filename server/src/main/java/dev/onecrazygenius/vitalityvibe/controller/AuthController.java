@@ -3,6 +3,9 @@ package dev.onecrazygenius.vitalityvibe.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import dev.onecrazygenius.vitalityvibe.payload.request.AuthRequest;
 import dev.onecrazygenius.vitalityvibe.payload.request.SignUpRequest;
 import dev.onecrazygenius.vitalityvibe.model.User; 
@@ -24,6 +27,8 @@ import org.springframework.http.ResponseEntity;
 @RequestMapping("/api/auth") 
 public class AuthController { 
 
+	private static Logger logger = LoggerFactory.getLogger(AuthController.class);
+
 	@Autowired
 	private UserServiceImpl service;
 
@@ -43,7 +48,7 @@ public class AuthController {
 
 		// check if user already exists
 		if (service.existsByEmail(signupRequest.getEmail())) {
-			// return a bad request response
+			logger.warn("User already exists");
 			return ResponseEntity.badRequest().body("User already exists");
 		}
 
@@ -51,6 +56,7 @@ public class AuthController {
 		if (signupRequest.getEmail().isEmpty() ||
 			!signupRequest.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
 		) {
+			logger.warn("Invalid email");
 			return ResponseEntity.badRequest().body("Invalid email");
 		}
 
@@ -58,14 +64,15 @@ public class AuthController {
 		if (signupRequest.getName().isEmpty() || 
 			!signupRequest.getName().matches("^[a-zA-Z\\s]*$")
 		) {
+			logger.warn("Invalid name");
 			return ResponseEntity.badRequest().body("Invalid name");
 		}
 
-		// check if password meets requirements
+		// check if password meets requirements and is not empty
 		if (signupRequest.getPassword().isEmpty() ||
-			!signupRequest.getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$")
+			!signupRequest.getPassword().matches("^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{8,}$")
 		) {
-			return ResponseEntity.badRequest().body("Invalid password");
+			logger.warn("Invalid password" + signupRequest.getPassword());
 		}
 
 		// set user details
@@ -76,6 +83,7 @@ public class AuthController {
 		
 		service.addUser(user);
 		// return a success response
+		logger.info("User registered successfully");
 		return ResponseEntity.ok("User registered successfully");
 	} 
 
