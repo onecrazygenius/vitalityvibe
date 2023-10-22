@@ -28,7 +28,7 @@ export const authOptions = {
                     const jwt = parsed?.token;
 
                     // get user info
-                    const userResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/profile`, {
+                    const userResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/profile`, {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",

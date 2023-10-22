@@ -57,6 +57,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     })
 
     if (result?.error) {
+  
       toast({
         title: "Error",
         description: result.error,
@@ -65,20 +66,20 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       });
 
       setIsLoading(false);
+    } else {
+      setTimeout(() => {
+        setIsLoading(false);
+        toast({
+          title: "Success",
+          description: "You have successfully logged in.",
+          duration: 5000,
+        });
+      }, 1000);
+  
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 2000);
     }
-
-    setTimeout(() => {
-      setIsLoading(false);
-      toast({
-        title: "Success",
-        description: "You have successfully logged in.",
-        duration: 5000,
-      });
-    }, 1000);
-
-    setTimeout(() => {
-      router.push("/dashboard");
-    }, 2000);
 
   }
 
