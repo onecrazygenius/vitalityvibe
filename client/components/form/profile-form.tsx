@@ -48,24 +48,19 @@ const profileFormSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileFormSchema>
 
 export function ProfileForm({ user }: { user: any }) {
-    if (!user?.name || !user?.email) return null
-
     const defaultValues: Partial<ProfileFormValues> = {
         username: user.name,
         email:  user.email,
         bio: "",
         urls: [],
     }
-
+    
     const form = useForm<ProfileFormValues>({
         resolver: zodResolver(profileFormSchema),
         defaultValues,
     })
-
-    const { fields, append } = useFieldArray({
-        name: "urls",
-        control: form.control,
-    })
+  
+    if (!user?.name || !user?.email) return null
 
     function onSubmit(data: ProfileFormValues) {
         toast({
@@ -77,73 +72,73 @@ export function ProfileForm({ user }: { user: any }) {
         )})
     }
 
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="Username" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name. It can be your real name or a
-                pseudonym. You can only change this once every 30 days.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+    return (
+        <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
-                  </SelectTrigger>
+                    <Input placeholder="Username" {...field} />
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value={user.email}>{user.email}</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                You can manage verified email addresses in your{" "}
-                <Link href="/examples/forms">email settings</Link>.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="bio"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bio</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Tell us a little bit about yourself"
-                  className="resize-none"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                You can <span>@mention</span> other users and organizations to
-                link to them.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Update profile</Button>
-      </form>
-    </Form>
-  )
+                <FormDescription>
+                    This is your public display name. It can be your real name or a
+                    pseudonym. You can only change this once every 30 days.
+                </FormDescription>
+                <FormMessage />
+                </FormItem>
+            )}
+            />
+            <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Email</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select a verified email to display" />
+                    </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                    <SelectItem value={user.email}>{user.email}</SelectItem>
+                    </SelectContent>
+                </Select>
+                <FormDescription>
+                    You can manage verified email addresses in your{" "}
+                    <Link href="/examples/forms">email settings</Link>.
+                </FormDescription>
+                <FormMessage />
+                </FormItem>
+            )}
+            />
+            <FormField
+            control={form.control}
+            name="bio"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Bio</FormLabel>
+                <FormControl>
+                    <Textarea
+                    placeholder="Tell us a little bit about yourself"
+                    className="resize-none"
+                    {...field}
+                    />
+                </FormControl>
+                <FormDescription>
+                    You can <span>@mention</span> other users and organizations to
+                    link to them.
+                </FormDescription>
+                <FormMessage />
+                </FormItem>
+            )}
+            />
+            <Button type="submit">Update profile</Button>
+        </form>
+        </Form>
+    )
 }
