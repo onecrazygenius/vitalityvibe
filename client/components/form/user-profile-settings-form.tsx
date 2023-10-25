@@ -97,9 +97,6 @@ export default function ProfileForm() {
         return;
       }
 
-      // Update the session with the new user data
-      update();
-
       setIsLoading(false);
       toast({
         title: "Profile Updated",
