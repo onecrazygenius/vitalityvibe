@@ -49,49 +49,53 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     const { email, password } = values;
 
-    const result = await signIn('credentials', {
-      email,
-      password,
-      redirect: false,
-      callbackUrl: `${window.location.origin}/dashboard`
-    })
+    try {
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+        callbackUrl: `${window.location.origin}/dashboard`
+      })
 
-    if (result?.error) {
+      if (result?.error) {
 
-      if (result.error === "Invalid email") {
-        form.setError("email", {
-          type: "manual",
-          message: "No user found with that email.",
-        });
+        if (result.error === "Invalid email") {
+          form.setError("email", {
+            type: "manual",
+            message: "No user found with that email.",
+          });
+        }
+
+        if (result.error === "Invalid login request") {
+          form.setError("email", {
+            type: "manual",
+            message: "Invalid email or password.",
+          });
+        }
+
+        throw new Error(result.error)
+
+      } else {
+        setTimeout(() => {
+          setIsLoading(false);
+          toast({
+            title: "Success",
+            description: "You have successfully logged in.",
+            duration: 5000,
+          });
+        }, 500);
+    
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 1000);
       }
-
-      if (result.error === "Invalid login request") {
-        form.setError("email", {
-          type: "manual",
-          message: "Invalid email or password.",
-        });
-      }
-
+    } catch (error) {
+      setIsLoading(false);
       toast({
         title: "Error",
         description: "There was an error logging in.",
         duration: 3000,
       });
-
-      setIsLoading(false);
-    } else {
-      setTimeout(() => {
-        setIsLoading(false);
-        toast({
-          title: "Success",
-          description: "You have successfully logged in.",
-          duration: 5000,
-        });
-      }, 500);
-  
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 1000);
     }
 
   }
