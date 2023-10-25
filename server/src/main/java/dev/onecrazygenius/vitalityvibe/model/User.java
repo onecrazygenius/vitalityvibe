@@ -1,10 +1,13 @@
 package dev.onecrazygenius.vitalityvibe.model;
 
-import jakarta.persistence.Entity; 
-import jakarta.persistence.GeneratedValue; 
+// jakarta.persistence (jakarta.persistence)
 import jakarta.persistence.GenerationType; 
-import jakarta.persistence.Id; 
+import jakarta.persistence.GeneratedValue; 
+import jakarta.persistence.Entity; 
 import jakarta.persistence.Table;
+import jakarta.persistence.Id; 
+
+// lombok (lombok)
 import lombok.AllArgsConstructor; 
 import lombok.Data; 
 import lombok.NoArgsConstructor; 
@@ -15,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "users")
 public class User { 
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private int id; 

@@ -1,10 +1,14 @@
 package dev.onecrazygenius.vitalityvibe.service;
 
+// dev.onecrazygenius.vitalityvibe (vitalityvibe)
 import dev.onecrazygenius.vitalityvibe.model.User;
-import org.springframework.security.core.GrantedAuthority; 
+
+// org.springframework (springframework)
 import org.springframework.security.core.authority.SimpleGrantedAuthority; 
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority; 
 
+// java.util (java.util)
 import java.util.Arrays; 
 import java.util.Collection; 
 import java.util.List; 

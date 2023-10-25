@@ -1,5 +1,6 @@
 package dev.onecrazygenius.vitalityvibe;
 
+// org.springframework.boot (spring-boot-starter)
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

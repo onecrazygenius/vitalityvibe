@@ -1,5 +1,6 @@
 package dev.onecrazygenius.vitalityvibe.payload.request;
 
+// lombok (lombok)
 import lombok.AllArgsConstructor; 
 import lombok.Data; 
 import lombok.NoArgsConstructor; 

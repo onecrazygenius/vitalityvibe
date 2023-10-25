@@ -1,14 +1,18 @@
 package dev.onecrazygenius.vitalityvibe.service;
 
-import dev.onecrazygenius.vitalityvibe.model.User;
+// dev.onecrazygenius.vitalityvibe (vitalityvibe)
 import dev.onecrazygenius.vitalityvibe.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired; 
-import org.springframework.security.core.userdetails.UserDetails; 
-import org.springframework.security.core.userdetails.UserDetailsService; 
+import dev.onecrazygenius.vitalityvibe.model.User;
+
+// org.springframework (springframework)
 import org.springframework.security.core.userdetails.UsernameNotFoundException; 
+import org.springframework.security.core.userdetails.UserDetailsService; 
+import org.springframework.security.core.userdetails.UserDetails; 
 import org.springframework.security.crypto.password.PasswordEncoder; 
+import org.springframework.beans.factory.annotation.Autowired; 
 import org.springframework.stereotype.Service; 
 
+// java.util (java.util)
 import java.util.Optional; 
 
 @Service

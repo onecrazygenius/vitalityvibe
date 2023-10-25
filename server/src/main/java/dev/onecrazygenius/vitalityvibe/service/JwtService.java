@@ -1,19 +1,23 @@
 package dev.onecrazygenius.vitalityvibe.service;
 
+// org.springframework (springframework)
+import org.springframework.security.core.userdetails.UserDetails; 
+import org.springframework.stereotype.Component; 
+
+// io.jsonwebtoken (jjwt)
 import io.jsonwebtoken.Claims; 
 import io.jsonwebtoken.Jwts; 
 import io.jsonwebtoken.SignatureAlgorithm; 
 import io.jsonwebtoken.io.Decoders; 
 import io.jsonwebtoken.security.Keys; 
-import org.springframework.security.core.userdetails.UserDetails; 
-import org.springframework.stereotype.Component; 
 
+// java (java.base)
 import java.nio.charset.Charset;
 import java.security.Key; 
-import java.util.Date; 
-import java.util.HashMap; 
-import java.util.Map; 
 import java.util.function.Function; 
+import java.util.HashMap; 
+import java.util.Date; 
+import java.util.Map; 
 
 @Component
 public class JwtService { 
