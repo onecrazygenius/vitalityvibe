@@ -60,22 +60,36 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"
 
-    // next-auth signup
-    const result = await fetch(url + '/auth/signup', {
-      method: 'POST',
-      body: JSON.stringify({ name, email, password }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    try {
+      // next-auth signup
+      const result = await fetch(url + '/auth/signup', {
+        method: 'POST',
+        body: JSON.stringify({ name, email, password }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
 
-    if (!result.ok) {      
-      toast({
-        title: "Error",
-        description: JSON.stringify(result),
-        variant: "destructive",
-      });
-    } else {
+      if (!result.ok) {
+        const errorData = await result.text() 
+        
+        if (errorData === "User already exists") {
+          form.setError("email", {
+            type: "manual",
+            message: "Email unavailable.",
+          });
+        }
+
+        if (errorData === "Invalid input data") {
+          form.setError("email", {
+            type: "manual",
+            message: "Invalid fields.",
+          });
+        }
+
+        throw new Error(errorData)
+      } 
+
       setTimeout(() => {
         setIsLoading(false);
         toast({
@@ -84,11 +98,18 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           duration: 5000,
         });
       }, 500);
-    }
+      }
 
-    setTimeout(() => {
-      router.push("/dashboard");
-    }, 1000);
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 1000);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An error occurred.",
+        variant: "destructive",
+      });
+    }
   }
 
   return (

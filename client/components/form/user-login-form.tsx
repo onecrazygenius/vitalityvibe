@@ -58,7 +58,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       })
 
       if (result?.error) {
-
         if (result.error === "Invalid email") {
           form.setError("email", {
             type: "manual",
