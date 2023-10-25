@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { signOut } from "next-auth/react"
+import { useState, useEffect } from "react"
 
 import {
   DropdownMenu,
@@ -11,14 +12,34 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { UserAvatar } from "@/components/user-avatar"
-import { useSession } from "next-auth/react"
+import fetchClient from "@/lib/user"
 
 export function UserAccountNav() {
-  // get user from next-auth session
-  const { data: session } = useSession()
+  // get user
+  const [user, setUser] = useState(null);
 
-  if (!session?.user) return null
-  const user = session.user
+  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
+
+  const fetchUserData = async () => {
+    try {
+      const response = await fetchClient(`${url}/user/profile`, {
+        method: "GET",
+      });
+      const userData = await response?.json();
+      setUser(userData);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  // Fetch user data when the component mounts
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  if (!user) {
+    return null
+  }
 
   return (
     <DropdownMenu>

@@ -70,6 +70,7 @@ export const authOptions = {
         },
         session: async ({ session, token }) => {
             if (token) {
+                session.user = token;
                 session.jwt = token.jwt;
             }
             return session;

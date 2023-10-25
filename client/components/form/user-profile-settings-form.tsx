@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -17,13 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import fetchClient from "@/lib/user";
@@ -104,6 +96,9 @@ export default function ProfileForm() {
         setIsLoading(false);
         return;
       }
+
+      // Update the session with the new user data
+      update();
 
       setIsLoading(false);
       toast({
