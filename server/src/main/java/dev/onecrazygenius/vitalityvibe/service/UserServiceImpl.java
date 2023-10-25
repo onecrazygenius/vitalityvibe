@@ -50,8 +50,16 @@ public class UserServiceImpl implements UserDetailsService {
 	 */
 	public Optional<User> getUserByEmail(String email) {
 		return repository.findByEmail(email).map(user -> {
-			user.setPassword(null);
 			return user;
 		});
 	}
+
+	/*
+	 * Update user
+	 */
+	public String updateUser(User user) {
+		repository.save(user);
+		return "User Updated Successfully"; 
+	}
+
 } 
