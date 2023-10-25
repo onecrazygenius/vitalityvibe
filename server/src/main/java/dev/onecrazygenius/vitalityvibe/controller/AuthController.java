@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 // org.slf4j (logger)
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

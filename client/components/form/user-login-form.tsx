@@ -57,12 +57,25 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     })
 
     if (result?.error) {
-  
+
+      if (result.error === "Invalid email") {
+        form.setError("email", {
+          type: "manual",
+          message: "No user found with that email.",
+        });
+      }
+
+      if (result.error === "Invalid login request") {
+        form.setError("email", {
+          type: "manual",
+          message: "Invalid email or password.",
+        });
+      }
+
       toast({
         title: "Error",
-        description: result.error,
-        variant: "destructive",
-        duration: 5000,
+        description: "There was an error logging in.",
+        duration: 3000,
       });
 
       setIsLoading(false);
