@@ -98,7 +98,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           duration: 5000,
         });
       }, 500);
-      }
 
       setTimeout(() => {
         router.push("/dashboard");
