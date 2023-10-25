@@ -8,18 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthRequest { 
-
-	private String email; 
-	private String password; 
-
-	public String getUsername() { 
-		return email; 
-	}
-
-	public void setUsername(String username) { 
-		this.email = username; 
-	}
-
+public class UserRequest {
+    private String name;
+    private String bio;
+    private String email;
+    private String role = "ROLE_USER";
 }
-

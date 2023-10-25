@@ -21,7 +21,8 @@ export const authOptions = {
 
                     if (!response.ok) {
                         // invalid credentials
-                        return null;
+                        const error = await response.text();
+                        return Promise.reject(new Error(error));
                     }
 
                     const parsed = await response.json();
@@ -38,14 +39,15 @@ export const authOptions = {
 
                     if (!userResponse.ok) {
                         // invalid credentials
-                        return null;
+                        const error = await userResponse.text();
+                        return Promise.reject(new Error(error));
                     }
 
                     const userParsed = await userResponse.json();
 
                     if (!userParsed) {
                         // no user
-                        return null;
+                        return Promise.reject(new Error("No user found"));
                     }
 
                     return {
@@ -53,7 +55,7 @@ export const authOptions = {
                         ...userParsed,
                     };
                 } catch (error) {
-                    return null;
+                    return Promise.reject(new Error(error));
                 }
             },
         })
@@ -70,6 +72,7 @@ export const authOptions = {
         },
         session: async ({ session, token }) => {
             if (token) {
+                session.user = token;
                 session.jwt = token.jwt;
             }
             return session;

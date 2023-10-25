@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator"
-import { ProfileForm } from "@/components/form/profile-form"
+import ProfileForm from "@/components/form/user-profile-settings-form"
 
 import PageTransition from "@/components/page-transition"
 import { getServerSession } from "next-auth";
@@ -21,7 +21,7 @@ export default async function SettingsProfilePage() {
             </p>
         </div>
         <Separator />
-        <ProfileForm user={user} />
+        <ProfileForm />
         </div>
     </PageTransition>
   )
