@@ -42,26 +42,20 @@ const DashboardPage = () => {
                     <div className="flex items-center space-x-2">
                         <CalendarDateRangePicker />
                         <Button>
-                            <Icons.upload className="h-4 w-4 text-white" />
+                            <Icons.upload className="h-4 w-4" />
                         </Button>
                     </div>
                 </div>
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {/* Card with a purple gradient background */}
-                    <Card className={cn(
-                            "bg-gradient-to-br",
-                            theme === "dark"
-                                ? "from-purple-600 to-purple-900"
-                                : "from-purple-500 to-purple-400"
-                        )}>
+                    <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium text-white">
+                            <CardTitle className="text-sm font-medium">
                                 Sleep
                             </CardTitle>
-                            <Icons.sleep className="h-4 w-4 text-white" />
+                            <Icons.sleep className="h-4 w-4" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold text-white">
+                            <div className="text-2xl font-bold">
                                 7.5hrs
                             </div>
                             <p className="text-xs text-green-500">
@@ -69,20 +63,15 @@ const DashboardPage = () => {
                             </p>
                         </CardContent>
                     </Card>
-                    <Card className={cn(
-                            "bg-gradient-to-br",
-                            theme === "dark"
-                                ? "from-orange-700 to-orange-900"
-                                : "from-orange-500 to-orange-400"
-                        )}>
+                    <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium text-white">
+                            <CardTitle className="text-sm font-medium">
                                 Exercise
                             </CardTitle>
-                            <Icons.exercise className="h-4 w-4 text-white" />
+                            <Icons.exercise className="h-4 w-4" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold text-white">
+                            <div className="text-2xl font-bold">
                                 2.5hrs
                             </div>
                             <p className="text-xs text-green-500">
@@ -90,20 +79,15 @@ const DashboardPage = () => {
                             </p>
                         </CardContent>
                     </Card>
-                    <Card className={cn(
-                            "bg-gradient-to-br",
-                            theme === "dark"
-                                ? "from-green-700 to-green-900"
-                                : "from-green-400 to-green-300"
-                        )}>
+                    <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium text-white">
+                            <CardTitle className="text-sm font-medium">
                                 Meals
                             </CardTitle>
-                            <Icons.meals className="h-4 w-4 text-white" />
+                            <Icons.meals className="h-4 w-4" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold text-white">
+                            <div className="text-2xl font-bold">
                                 2100kcal
                             </div>
                             <p className={cn(
@@ -127,7 +111,7 @@ const DashboardPage = () => {
                                 <Icons.goals className="h-4 w-4 text-gray-500" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold text-white mb-4">
+                                <div className="text-2xl font-boldmb-4">
                                     Achieved 2/3 goals
                                 </div>
                                 {goals.map((goal, index) => (
