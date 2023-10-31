@@ -36,10 +36,36 @@ public class UserService {
             throw new IllegalStateException("Password are not the same");
         }
 
+        // validate new password
+        if (!this.validatePassword(request.getNewPassword())) {
+            throw new IllegalStateException("Password is not valid");
+        }
+
         // update the password
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
 
         // save the new password
         repository.save(user);
+    }
+
+    /**
+     * This method is used to validate the password.
+     * @param password
+     * @return boolean
+     */
+    private boolean validatePassword(String password) {
+    
+        if (password.length() < 8) return false;
+
+        if (!password.matches(".*[a-z].*")) return false;
+
+        if (!password.matches(".*[A-Z].*")) return false;
+
+        if (!password.matches(".*[0-9].*")) return false;
+
+        if (!password.matches(".*[!@#$%^&*()_+=-].*")) return false;
+
+        return true;
+    
     }
 }
