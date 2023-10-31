@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Order;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,12 +22,15 @@ class AuthenticationControllerTest {
 	private MockMvc mockMvc;
 
 	@Test
+    @Order(1)
 	void shouldRegisterUser() throws Exception {
         this.mockMvc.perform(
             post("/api/v1/auth/register")
             .contentType("application/json")
             .content("{\"firstname\":\"Magnus\",\"lastname\":\"Carlsen\",\"email\":\"magnus.carlsen@chess.com\",\"password\":\"Password!1\",\"role\":\"ADMIN\"}")
         ).andDo(print())
-        .andExpect(status().isOk());
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("access_token")))
+        .andExpect(content().string(containsString("refresh_token")));
     }
 }
