@@ -1,6 +1,7 @@
 package dev.onecrazygenius.springapi.user;
 
 import dev.onecrazygenius.springapi.token.Token;
+import dev.onecrazygenius.springapi.sleep.Sleep;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -39,6 +40,9 @@ public class User implements UserDetails {
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
+
+  @OneToMany(mappedBy = "user")
+  private List<Sleep> sleep;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

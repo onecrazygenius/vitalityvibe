@@ -60,6 +60,8 @@ public class AuthenticationService {
         // save the user
         var savedUser = repository.save(user);
 
+        System.out.println("savedUser: " + savedUser);
+
         // generate the jwt token
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
@@ -129,11 +131,10 @@ public class AuthenticationService {
 
     private void revokeAllUserTokens(User user) {
         var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
-        if (validUserTokens.isEmpty())
-        return;
+        if (validUserTokens.isEmpty()) return;
         validUserTokens.forEach(token -> {
-        token.setExpired(true);
-        token.setRevoked(true);
+            token.setExpired(true);
+            token.setRevoked(true);
         });
         tokenRepository.saveAll(validUserTokens);
     }

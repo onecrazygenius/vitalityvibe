@@ -56,11 +56,11 @@ public class ApplicationConfig {
      * This method is used to create the auditor aware.
      * @param null
      * 
-     * @return AuditorAware<Integer>
+     * @return AuditorAware<String>
      */
 
     @Bean
-    public AuditorAware<Integer> auditorAware() {
+    public AuditorAware<String> auditorAware() {
         return new ApplicationAuditAware();
     }
 
