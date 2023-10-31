@@ -48,6 +48,12 @@ public class AuthenticationService {
      */
 
     public AuthenticationResponse register(RegisterRequest request) {
+
+        // validate the request
+        if(!this.validateRegisterRequest(request)) {
+            throw new RuntimeException("Invalid registration details");
+        }
+
         // create a new user
         var user = User.builder()
             .firstname(request.getFirstname())
@@ -81,6 +87,12 @@ public class AuthenticationService {
      */
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+
+        // validate the request
+        if(!this.validateAuthenticationRequest(request)) {
+            throw new RuntimeException("Invalid authentication details");
+        }
+
         // authenticate the user
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
@@ -182,4 +194,107 @@ public class AuthenticationService {
             }
         }
     }
+
+    /**
+     * This method is used to validate the register request.
+     * @param request
+     * @return boolean
+     */
+    private boolean validateRegisterRequest(RegisterRequest request) {
+        // check if the request is null
+        if (request == null) return false;
+
+        // check if the request firstname is null
+        if (request.getFirstname() == null) return false;
+
+        // check if the request lastname is null
+        if (request.getLastname() == null) return false;
+
+        // check if the request email is null
+        if (request.getEmail() == null) return false;
+
+        // check if the request password is null
+        if (request.getPassword() == null) return false;
+
+        // check if the request firstname is empty
+        if (request.getFirstname().isEmpty()) return false;
+
+        // check if the request lastname is empty
+        if (request.getLastname().isEmpty()) return false;
+
+        // check if the request email is empty
+        if (request.getEmail().isEmpty()) return false;
+
+        // check if the request password is empty
+        if (request.getPassword().isEmpty()) return false;
+
+        // check if the request email is valid
+        if (!request.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) return false;
+
+        // check if the request password is valid
+        if (request.getPassword().length() < 8) return false;
+
+        // check if the request password contains a number
+        if (!request.getPassword().matches(".*\\d.*")) return false;
+
+        // check if the request password contains a lowercase letter
+        if (!request.getPassword().matches(".*[a-z].*")) return false;
+
+        // check if the request password contains an uppercase letter
+        if (!request.getPassword().matches(".*[A-Z].*")) return false;
+
+        // check if the request password contains a special character
+        if (!request.getPassword().matches(".*[!@#$%^&*].*")) return false;
+
+        // check if the request role is valid
+        if (!request.getRole().equals(Role.USER) && !request.getRole().equals(Role.ADMIN)) return false;
+
+        // return true
+        return true;
+    }
+
+    /**
+     * This method is used to validate the authentication request.
+     * @param request
+     * @return boolean
+     */
+
+    private boolean validateAuthenticationRequest(AuthenticationRequest request) {
+        // check if the request is null
+        if (request == null) return false;
+
+        // check if the request email is null
+        if (request.getEmail() == null) return false;
+
+        // check if the request password is null
+        if (request.getPassword() == null) return false;
+
+        // check if the request email is empty
+        if (request.getEmail().isEmpty()) return false;
+
+        // check if the request password is empty
+        if (request.getPassword().isEmpty()) return false;
+
+        // check if the request email is valid
+        if (!request.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) return false;
+
+        // check if the request password is valid
+        if (request.getPassword().length() < 8) return false;
+
+        // check if the request password contains a number
+        if (!request.getPassword().matches(".*\\d.*")) return false;
+
+        // check if the request password contains a lowercase letter
+        if (!request.getPassword().matches(".*[a-z].*")) return false;
+
+        // check if the request password contains an uppercase letter
+        if (!request.getPassword().matches(".*[A-Z].*")) return false;
+
+        // check if the request password contains a special character
+        if (!request.getPassword().matches(".*[!@#$%^&*].*")) return false;
+
+        // return true
+        return true;
+    }
+
 }

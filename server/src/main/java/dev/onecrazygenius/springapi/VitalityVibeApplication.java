@@ -41,7 +41,7 @@ public class VitalityVibeApplication {
 					.firstname("Admin")
 					.lastname("Admin")
 					.email("admin@mail.com")
-					.password("password")
+					.password("!234Qwer")
 					.role(ADMIN)
 					.build();
 
