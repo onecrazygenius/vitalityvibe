@@ -1,14 +1,13 @@
-package dev.onecrazygenius.vitalityvibe;
+package dev.onecrazygenius.springapi;
 
 import org.junit.jupiter.api.Test;
+
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class VitalityvibeApplicationTests {
+class SpringAppTests {
 
 	@Test
 	void contextLoads() {
-		
 	}
-
 }
