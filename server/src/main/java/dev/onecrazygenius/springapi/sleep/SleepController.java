@@ -18,9 +18,7 @@ public class SleepController {
     private final SleepService service;
 
     @PostMapping
-    public ResponseEntity<?> save(
-            @RequestBody SleepRequest request
-    ) {
+    public ResponseEntity<?> save(@RequestBody SleepRequest request) {
         service.save(request);
         return ResponseEntity.accepted().build();
     }

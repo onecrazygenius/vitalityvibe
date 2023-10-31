@@ -32,8 +32,8 @@ public class SleepService {
     }
 
     public List<Sleep> findAll() {
-        System.out.println("SleepService.findAll()");
-        return repository.findAll();
+        User user = this.getUser();
+        return repository.findAllByUser(user);
     }
 
     private User getUser() {
