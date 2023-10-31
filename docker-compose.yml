@@ -5,6 +5,7 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
+      POSTGRES_DB: vitalityvibe
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
