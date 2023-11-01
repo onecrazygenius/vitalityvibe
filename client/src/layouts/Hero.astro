@@ -1,12 +1,17 @@
 ---
-import { ModeToggle } from '@/components/ModeToggle.tsx';
+import { 
+	ThemeToggle
+} from '@/components/theme-toggle.tsx';
+import { 
+	Button,
+	buttonVariants
+} from '@/components/ui/button';
+import cn from '@/lib/utils';
 
 interface Props {
 	title: string;
-	description: string;
 }
-
-const { title, description } = Astro.props;
+const { title } = Astro.props;
 ---
 
 <script is:inline>
@@ -32,14 +37,27 @@ const { title, description } = Astro.props;
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
+		<meta name="description" content="" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>VitalityVibe - {title}</title>
+		<title> - {title}</title>
 	</head>
 	<body>
-		<slot />
-		<ModeToggle client:load />
+		<div className="flex min-h-screen flex-col">
+			<header className="container z-40 bg-background">
+			  	<div className="flex h-20 items-center justify-between py-6">
+				<!-- Main Nav -->
+				<div />
+					<nav>
+					</nav>
+				</div>
+			</header>
+			<main className="flex-1">
+			<slot />
+			</main>
+			<!-- Footer -->
+			<div />
+		<ThemeToggle client:load />
 	</body>
 </html>

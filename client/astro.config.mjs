@@ -9,5 +9,10 @@ export default defineConfig({
     tailwind({
       applyBaseStyles: false,
     })
-  ]
+  ],
+  vite: {
+    ssr: {
+      noExternal: ["@radix-ui/*"],
+    },
+  },
 });
