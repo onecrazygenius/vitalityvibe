@@ -1,0 +1,36 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import Layout from "@/layouts/Hero.astro"
+
+import { getSession } from "auth-astro/server"
+import { SignOut } from "auth-astro/components"
+
+let session = await getSession(Astro.request)
+if (!session) return Astro.redirect("/")
+---
+<Layout
+  title="Protected Page"
+>
+  <ViewTransitions />
+  <main>
+    <section class="container">
+      <div class="row">
+      <div class="col-12 font-bold">
+        <p>
+          Only logged in users can see this page.
+        </p>
+
+        <p>
+          Logged in as {session?.user?.name}
+        </p>
+
+        <p>
+          <a href="/">Home</a>
+
+          <SignOut>Logout</SignOut>
+        </p>
+      </div>
+      </div>
+    </section>
+  </main>
+</Layout>
