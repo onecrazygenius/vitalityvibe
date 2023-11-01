@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 export function HeroButtons() {
     return (
         <div className="space-x-4">
-            <a href="/login" className={cn(buttonVariants({ size: "lg" }), "animate-pulse")}>
+            <a href="/auth/login" className={cn(buttonVariants({ size: "lg" }), "focus:animate-bounce")}>
             Get Started
             </a>
             <a

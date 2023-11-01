@@ -3,13 +3,13 @@ import { buttonVariants } from "@/components/ui/button";
 
 export function AuthButtons() {
     return (<>
-        <a href="/signup" 
+        <a href="/auth/signup" 
             className={cn(
                 buttonVariants({ size: "sm" })
             )}>
             Sign Up
         </a>
-        <a href="/login"
+        <a href="/auth/login"
             className={cn(
                 buttonVariants({ variant: "secondary", size: "sm" }),
                 "px-4",

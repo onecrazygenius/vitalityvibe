@@ -54,7 +54,7 @@ export function HeroFeatures() {
                 VitalityVibe.{" "}
                 <a
                 href="/"
-                class="underline underline-offset-4"
+                className="underline underline-offset-4"
                 >
                 Learn more
                 </a>

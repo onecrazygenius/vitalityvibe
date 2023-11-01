@@ -1,6 +1,6 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
 import Layout from "@/layouts/Hero.astro"
+import { ViewTransitions } from 'astro:transitions';
 
 import { SignOut } from "auth-astro/components"
 
@@ -27,7 +27,6 @@ if (!session) return Astro.redirect("/")
 
         <p>
           <a href="/">Home</a>
-
           <SignOut>Logout</SignOut>
         </p>
       </div>

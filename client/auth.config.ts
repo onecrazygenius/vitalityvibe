@@ -70,4 +70,7 @@ export default {
       return session;
     },
   },
+  pages: {
+    signIn: '/auth/login',
+  }
 }
