@@ -2,9 +2,10 @@
 import { ViewTransitions } from 'astro:transitions';
 import Layout from "@/layouts/Hero.astro"
 
-import { getSession } from "auth-astro/server"
 import { SignOut } from "auth-astro/components"
 
+// Get the session from the request
+import { getSession } from "auth-astro/server"
 let session = await getSession(Astro.request)
 if (!session) return Astro.redirect("/")
 ---

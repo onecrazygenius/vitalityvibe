@@ -1,6 +1,15 @@
 ---
 import "@/styles/globals.css";
 import { 
+	MainNav 
+}from '@/components/main-nav.tsx';
+import { 
+	AuthButtons
+} from '@/components/auth-buttons.tsx';
+import { 
+	UserAccountNav
+} from '@/components/user-account-nav.tsx';
+import { 
 	ThemeToggle
 } from '@/components/theme-toggle.tsx';
 import { 
@@ -8,6 +17,9 @@ import {
 	buttonVariants
 } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+
+import type { Session } from '@auth/core/types';
+import { Auth } from 'auth-astro/components';
 
 interface Props {
 	title: string;
@@ -48,11 +60,17 @@ const { title } = Astro.props;
 		<div class="flex min-h-screen flex-col">
 			<header class="container z-40 bg-background">
 			  	<div class="flex h-20 items-center justify-between py-6">
-				<!-- Main Nav -->
-				<div />
-					<nav>
-					</nav>
-				</div>
+				<MainNav client:load />
+				<nav>
+					<Auth>
+						{(session: Session | null) =>
+						session ? (
+							<UserAccountNav client:load />
+						) : (
+							<AuthButtons client:load />
+						)}
+					</Auth>
+				<nav>
 			</header>
 			<main class="flex-1">
 			<slot />
