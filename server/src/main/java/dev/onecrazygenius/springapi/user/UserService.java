@@ -49,6 +49,18 @@ public class UserService {
     }
 
     /**
+     * This method is used to get the user information.
+     * @param user
+     * @return ProfileResponse
+     */
+    public ProfileResponse getProfile(User user) {
+        return ProfileResponse.builder()
+            .id(user.getId())
+            .email(user.getEmail())
+            .build();
+    }
+
+    /**
      * This method is used to validate the password.
      * @param password
      * @return boolean
