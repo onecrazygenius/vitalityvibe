@@ -38,8 +38,7 @@ public class VitalityVibeApplication {
 		return args -> {
 			// create the admin user
 			var admin = RegisterRequest.builder()
-					.firstname("Admin")
-					.lastname("Admin")
+					.displayname("Admin")
 					.email("admin@mail.com")
 					.password("!234Qwer")
 					.role(ADMIN)

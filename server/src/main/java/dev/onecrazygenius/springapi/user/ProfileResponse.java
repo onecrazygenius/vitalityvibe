@@ -17,4 +17,8 @@ public class ProfileResponse {
 
     @JsonProperty("email")
     private String email;
+
+    @JsonProperty("displayname")
+    private String displayname;
+
 }

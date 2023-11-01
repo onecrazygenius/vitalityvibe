@@ -56,8 +56,7 @@ public class AuthenticationService {
 
         // create a new user
         var user = User.builder()
-            .firstname(request.getFirstname())
-            .lastname(request.getLastname())
+            .displayname(request.getDisplayname())
             .email(request.getEmail())
             .password(passwordEncoder.encode(request.getPassword()))
             .role(request.getRole())
@@ -204,11 +203,8 @@ public class AuthenticationService {
         // check if the request is null
         if (request == null) return false;
 
-        // check if the request firstname is null
-        if (request.getFirstname() == null) return false;
-
-        // check if the request lastname is null
-        if (request.getLastname() == null) return false;
+        // check if the request displayname is null
+        if (request.getDisplayname() == null) return false;
 
         // check if the request email is null
         if (request.getEmail() == null) return false;
@@ -216,11 +212,8 @@ public class AuthenticationService {
         // check if the request password is null
         if (request.getPassword() == null) return false;
 
-        // check if the request firstname is empty
-        if (request.getFirstname().isEmpty()) return false;
-
-        // check if the request lastname is empty
-        if (request.getLastname().isEmpty()) return false;
+        // check if the request displayname is empty
+        if (request.getDisplayname().isEmpty()) return false;
 
         // check if the request email is empty
         if (request.getEmail().isEmpty()) return false;

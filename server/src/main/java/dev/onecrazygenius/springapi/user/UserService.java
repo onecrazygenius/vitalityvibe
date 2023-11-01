@@ -57,6 +57,7 @@ public class UserService {
         return ProfileResponse.builder()
             .id(user.getId())
             .email(user.getEmail())
+            .displayname(user.getDisplayname())
             .build();
     }
 
