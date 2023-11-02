@@ -41,10 +41,19 @@ export default {
           const jwt = parsedResponse.access_token;
 
           // You can make more request to get other information about the user eg. Profile details
-          // return user credentials together with jwt
+          const user = await fetch("http://localhost:8080/api/v1/users/me", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          });
+
+          const parsedUser = await user.json();
+
           return {
             ...credentials,
             jwt,
+            user: parsedUser
           };
         } catch (e) {
           return null;
@@ -53,24 +62,22 @@ export default {
     }),
   ],
   callbacks: {
-    jwt: async ({ token, user }) => {
-     // user is only available the first time a user signs in authorized
+    jwt: async ({ token, user }: any) => {
       if (user) {
-        return {
-          ...token,
-          jwt: user.jwt,
-        };
+        token.id = user.user.id;
+        token.name = user.user.displayname;
+        token.email = user.user.email;
       }
       return token;
     },
-    session: async ({ session, token }) => {
-      if (token) {
-        session.jwt = token.jwt;
-      }
+    session: async ({ session, token }: any) => {
+      session.user.id = token.id;
+      session.user.name = token.name;
+      session.user.email = token.email;
       return session;
     },
   },
-  pages: {
-    signIn: '/auth/login',
-  }
+  // pages: {
+  //   signIn: '/auth/login',
+  // }
 }
