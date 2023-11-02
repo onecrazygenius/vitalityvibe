@@ -3,6 +3,7 @@ import {
   Cookie,
   User,
   Users,
+  Moon,
   X,
   type Icon as LucideIcon,
 } from "lucide-react";
@@ -15,6 +16,7 @@ export const Icons = {
   cookie: Cookie,
   goals: Award,
   user: User,
+  sleep: Moon,
   github: (props: IconProps) => (
     <svg viewBox="0 0 438.549 438.549" {...props}>
       <path

@@ -5,6 +5,7 @@ import dev.onecrazygenius.springapi.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -37,9 +38,15 @@ public class SleepService {
     }
 
     private User getUser() {
-        // get the user from the jwt token
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String email = ((UserDetails) principal).getUsername();
-        return userRepository.findByEmail(email).orElseThrow();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails) {
+                String email = ((UserDetails) principal).getUsername();
+                return userRepository.findByEmail(email).orElseThrow();
+            }
+        }
+        throw new RuntimeException("User not found in the JWT token.");
     }
 }

@@ -38,7 +38,7 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "user")
   private List<Token> tokens;
 
   @OneToMany(mappedBy = "user")

@@ -2,6 +2,7 @@ package dev.onecrazygenius.springapi.sleep;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,7 @@ public class SleepController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Sleep>> findAllSleep() {
+    public ResponseEntity<?> findAllSleep() {
         return ResponseEntity.ok(service.findAll());
     }
 }

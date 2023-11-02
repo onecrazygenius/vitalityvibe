@@ -67,6 +67,7 @@ export default {
         token.id = user.user.id;
         token.name = user.user.displayname;
         token.email = user.user.email;
+        token.jwt = user.jwt;
       }
       return token;
     },
@@ -74,6 +75,7 @@ export default {
       session.user.id = token.id;
       session.user.name = token.name;
       session.user.email = token.email;
+      session.user.jwt = token.jwt;
       return session;
     },
   },

@@ -3,20 +3,44 @@ import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import { MobileNav } from "@/components/mobile-nav"
 
-export function MainNav() {
+type MainNavProps = {
+  session?: any
+}
+
+type NavItem = {
+  title: string
+  href: string
+  disabled?: boolean
+}
+
+export function MainNav({session}: MainNavProps) {
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false)
 
-  // items for the main nav
-  const items = [
-    {
-      title: "Home",
-      href: "/",
-    },
-    {
-      title: "About",
-      href: "/about",
-    }
-  ]
+  let items: NavItem[] = []
+
+  if (session) {
+    items = [
+      {
+        title: "Dashboard",
+        href: "/dashboard",
+      },
+      {
+        title: "Metrics",
+        href: "/metrics",
+      }
+    ]
+  } else {
+    items = [
+      {
+        title: "Home",
+        href: "/",
+      },
+      {
+        title: "About",
+        href: "/about",
+      }
+    ]
+  }
 
   // get current path segment
   const segment = typeof window !== "undefined" ? window.location.pathname.split("/")[1] : ""
