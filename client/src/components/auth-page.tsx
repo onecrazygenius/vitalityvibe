@@ -1,17 +1,9 @@
-
-import React from "react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "@/components/theme-toggle";
-//import { UserAuthForm } from "@/components/user-auth-form";
+import { LoginForm } from "@/components/forms/login-form";
+import { SignupForm } from "@/components/forms/signup-form";
 
 export function AuthPage() {
 
@@ -66,14 +58,31 @@ export function AuthPage() {
         <div className="lg:p-8">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
-                <h1 className="text-2xl font-semibold tracking-tight">
-                Login
-                </h1>
-                <p className="text-sm text-muted-foreground">
-                Enter your email and password to continue
-                </p>
+                { currentPage === "/auth/login" ? (
+                    <>
+                        <h1 className="text-2xl font-semibold tracking-tight">
+                            Login
+                        </h1>
+                        <p className="text-sm text-muted-foreground">
+                            Enter your email and password to continue
+                        </p>
+                    </>
+                ) : (
+                    <>
+                        <h1 className="text-2xl font-semibold tracking-tight">
+                            Signup
+                        </h1>
+                        <p className="text-sm text-muted-foreground">
+                            Create an account to get started
+                        </p>
+                    </>
+                )}
             </div>
-            {/* <UserAuthForm /> */}
+            { currentPage === "/auth/login" ? (
+            <LoginForm />
+            ) : (
+            <>
+            <SignupForm />
             <p className="px-8 text-center text-sm text-muted-foreground">
                 By clicking continue, you agree to our{" "}
                 <a
@@ -91,6 +100,8 @@ export function AuthPage() {
                 </a>
                 .
             </p>
+            </>
+            )}
             </div>
             {/* Bottom right button for theme */}
             <div className="absolute bottom-4 right-4">
