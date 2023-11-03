@@ -16,14 +16,12 @@ export async function getSession(params?: GetSessionParams) {
     return json
 }
 
-export async function fetchData(method: string, url: string, token: any) {
-    const apiUrl = import.meta.env.PUBLIC_API_URL || ""
+export async function fetchData(url: string, token: any) {
     try {
-        const res = await fetch(apiUrl + url, {
-            method: method,
+        const res = await fetch('/server/' + url, {
+            method: "GET",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + token
+                Authorization: `Bearer ${token}`,
             }
         })
         const json = await res.json()

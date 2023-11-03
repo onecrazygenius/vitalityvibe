@@ -11,7 +11,7 @@ export default defineConfig({
     react(), 
     tailwind({
       applyBaseStyles: false,
-    })
+    }),
   ],
   output: 'server',
   adapter: node({
@@ -20,6 +20,15 @@ export default defineConfig({
   vite: {
     ssr: {
       noExternal: ["@radix-ui/*"],
+    },
+    server: {
+      proxy: {
+        "/server": {
+          target: "http://localhost:8080/api/v1",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/server/, ""),
+        },
+      },
     },
   },
 });

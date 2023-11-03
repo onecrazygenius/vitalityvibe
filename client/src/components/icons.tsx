@@ -1,5 +1,6 @@
 import {
   Award,
+  CalendarIcon,
   Cookie,
   User,
   Users,
@@ -12,6 +13,7 @@ export type Icon = LucideIcon;
 
 export const Icons = {
   close: X,
+  calendar: CalendarIcon,
   circles: Users,
   cookie: Cookie,
   goals: Award,
