@@ -1,0 +1,52 @@
+---
+import '@/styles/globals.css'
+import Layout from '@/layouts/Main.astro';
+import { ViewTransitions } from 'astro:transitions';
+
+import { HeroButtons } from '@/components/hero-buttons';
+import { HeroFeatures } from '@/components/hero-features';
+import { GithubButton } from '@/components/socials/github-button';
+
+import type { Session } from '@auth/core/types';
+import { Auth, SignIn, SignOut } from 'auth-astro/components';
+---
+
+<Layout
+	title="Home"
+>
+  <ViewTransitions />
+  <section class="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
+	<div class="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
+	  {/* 
+		TODO: remove currently in beta 
+	  */}
+	  <span class="text-xs font-bold text-white bg-teal-500 rounded-full px-2 py-1 uppercase tracking-wide">
+		v0.1.0 Beta Build
+	  </span>
+
+	  <h1 class="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
+		A new way to lead a&nbsp;<span class="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-teal-400">healthy</span>
+		&nbsp;life.
+	  </h1>
+	  <p class="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
+		VitalityVibe is a new way to lead a healthy life. We provide you with the tools to track your health and wellness, 
+		and share it with your friends and family. 
+	  </p>
+	  <HeroButtons client:load />
+	</div>
+  </section>
+  <HeroFeatures client:only />
+  <section id="open-source" class="container py-8 md:py-12 lg:py-24">
+	<div class="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
+	  <h2 class="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
+		Proudly Open Source
+	  </h2>
+	  <p class="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+		VitalityVibe is open source and powered by open source software. <br />{" "}
+		The code is available on{" "}
+		<GithubButton client:load />
+	  </p>
+	</div>
+  </section>
+</Layout>
+	  

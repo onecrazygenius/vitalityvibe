@@ -1,36 +1,50 @@
-version: '3'
-
-services:
-  # MySQL Database
-  db:
-    image: mysql:8.1.0
-    ports:
-      - 3306:3306
-    restart: unless-stopped
+services:  
+  postgres:
+    container_name: postgres-sql
+    image: postgres
     environment:
-      - MYSQL_DATABASE=vitalityvibe
-      - MYSQL_USER=vitalityvibe
-      - MYSQL_PASSWORD=password
-      - MYSQL_ROOT_PASSWORD=password
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: vitalityvibe
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@pgadmin.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - postgres
+    restart: unless-stopped
 
   # Java Spring Boot API
   api:
     depends_on:
-      - db
+      - postgres
     build:
       context: server
       dockerfile: Dockerfile
     ports:
       - 8080:8080
-    restart: on-failure
+    restart: unless-stopped
 
-  # NextJS React Client
-  client:
-    depends_on:
-      - api
-    build:
-      context: client
-      dockerfile: Dockerfile
-    ports:
-      - 3000:3000
-    restart: on-failure
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:

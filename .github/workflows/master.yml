@@ -50,6 +50,6 @@ jobs:
           java-version: '21'
           distribution: 'adopt'
 
-      - name: Build with Maven
+      - name: Test with Maven
         working-directory: server
-        run: mvn -B package --file pom.xml
+        run: mvn -B test --file pom.xml

@@ -1,0 +1,12 @@
+---
+import Layout from '@/layouts/Auth.astro'
+import { ViewTransitions } from 'astro:transitions';
+
+import { AuthPage } from '@/components/auth-page'
+---
+<Layout
+    title="Login"
+>
+    <ViewTransitions />
+    <AuthPage client:only />
+</Layout>

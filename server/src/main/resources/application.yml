@@ -1,21 +1,40 @@
-# spring boot
+# /server/src/main/resources/application.yml 
+#
+# This file contains the configuration for the Spring Boot application.
+#
+# The application configuration is divided into two sections:
+#  - Spring Boot application configuration
+#  - Application configuration
+#
+# The Spring Boot application configuration is used to configure the Spring Boot application.
+# The Application configuration is used to configure the application.
+#
+
+### Spring Boot application configuration ###
 spring:
-  main:
-    allow-circular-references: true
+  # postgres database configuration
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/vitalityvibe
-    username: vitalityvibe
+    url: jdbc:postgresql://localhost:5432/vitalityvibe
+    username: root
     password: password
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.postgresql.Driver
+  # jpa configuration for hibernate
   jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-    show-sql: true
     hibernate:
-      ddl-auto: update
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+      ddl-auto: create-drop
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
-        use_sql_comments: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+### Appliction configuration ###
+application:
+  # jwt configuration
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970 # long hex string
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
