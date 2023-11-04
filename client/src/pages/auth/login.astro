@@ -4,7 +4,9 @@ import { ViewTransitions } from 'astro:transitions';
 
 import { AuthPage } from '@/components/auth-page'
 ---
-<Layout>
+<Layout
+    title="Login"
+>
     <ViewTransitions />
     <AuthPage client:only />
 </Layout>
