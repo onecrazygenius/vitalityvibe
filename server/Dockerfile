@@ -2,7 +2,8 @@
 FROM maven:3-amazoncorretto-21-al2023 as build
 WORKDIR /home/app
 COPY src /home/app/src
-COPY env/production.yml /home/app/src/main/resources/application.yml
+# if file env/production.yml exists, copy it to application.yml, else do nothing
+RUN test -f env/production.yml && cp env/production.yml /home/app/src/main/resources/application.yml || echo "no production.yml found"
 COPY pom.xml /home/app
 RUN mvn -f /home/app/pom.xml clean package -Dmaven.test.skip=true
 
