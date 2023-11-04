@@ -71,6 +71,8 @@ export function Sleep() {
     tickFormatter: (value: number) => `${value} hrs`,
   }
 
+  if (!sleep) return null
+
   return (
     <Card>
       <CardHeader className="space-y-1">

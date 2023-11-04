@@ -13,6 +13,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import { 
     Popover, 
     PopoverContent, 
@@ -36,43 +45,36 @@ import { format } from "date-fns"
     startTime: "2023-10-31T22:00:00"
 */
 
+const cardioTypes = ['CARDIO', 'STRENGTH', 'FLEXIBILITY', 'BALANCE', 'OTHER']
+
 const formSchema = z.object({
-    start: z.date(),
-    end: z.date(),
+    datetime: z.date(),
     duration: z.number(),
-    quality: z.number(),
+    calories: z.number(),
+    type: z.enum(cardioTypes),
 })
 
 type FormValues = z.infer<typeof formSchema>
 
-type SleepFormProps = {
+type ExerciseFormProps = {
     open: boolean
     setOpen: (open: boolean) => void
 }
 
-export function SleepForm({ open, setOpen }: SleepFormProps) {
+export function ExerciseForm({ open, setOpen }: ExerciseFormProps) {
     const [loading, setLoading] = useState(false)
-    const [hours, setHours] = useState<number | ''>(0);
     const { toast } = useToast()
 
     const form = useForm({
         resolver: zodResolver(formSchema),
     })
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: any) => {
-        const inputValue = event.target.value;
-        const inputMinutes = inputValue !== '' ? +inputValue * 60 : ''; // Convert to minutes or empty string
-        setHours(inputMinutes);
-        field.onChange(inputMinutes); // Set field value to minutes
-    };
-
     const onSubmit = async (data: FormValues) => {
         setLoading(true)
         try {
             const session = await getSession()
             const token = session?.user.jwt
-            console.log(token)
-            const res = fetch('/server/metrics/sleep', {
+            const res = fetch('/server/metrics/exercise', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -81,8 +83,8 @@ export function SleepForm({ open, setOpen }: SleepFormProps) {
                 body: JSON.stringify(data)
             })
             toast({
-                title: "Sleep added!",
-                description: "Your sleep has been added.",
+                title: "Exercise added!",
+                description: "Your exercise has been added.",
             })
             setOpen(false)
             window.location.reload()
@@ -100,10 +102,10 @@ export function SleepForm({ open, setOpen }: SleepFormProps) {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
                 control={form.control}
-                name="start"
+                name="datetime"
                 render={({ field }) => (
                     <FormItem className="flex flex-col">
-                    <FormLabel>Start Time</FormLabel>
+                    <FormLabel>Exercise Date</FormLabel>
                     <Popover>
                         <PopoverTrigger asChild>
                         <FormControl>
@@ -136,55 +138,11 @@ export function SleepForm({ open, setOpen }: SleepFormProps) {
                         </PopoverContent>
                     </Popover>
                     <FormDescription>
-                        When did you fall asleep?
+                        When did you exercise?
                     </FormDescription>
                     <FormMessage />
                     </FormItem>
                 )}
-                />
-                <FormField
-                    control={form.control}
-                    name="end"
-                    render={({ field }) => (
-                        <FormItem className="flex flex-col">
-                        <FormLabel>End Time</FormLabel>
-                        <Popover>
-                            <PopoverTrigger asChild>
-                            <FormControl>
-                                <Button
-                                variant={"outline"}
-                                className={cn(
-                                    "w-[240px] pl-3 text-left font-normal",
-                                    !field.value && "text-muted-foreground"
-                                )}
-                                >
-                                {field.value ? (
-                                    format(field.value, "PPP")
-                                ) : (
-                                    <span>Pick a date</span>
-                                )}
-                                <Icons.calendar className="ml-auto h-4 w-4 opacity-50" />
-                                </Button>
-                            </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange}
-                                disabled={(date) =>
-                                    date > new Date() || date < new Date("1900-01-01")
-                                }
-                                initialFocus
-                            />
-                            </PopoverContent>
-                        </Popover>
-                        <FormDescription>
-                            When did you wake up?
-                        </FormDescription>
-                        <FormMessage />
-                        </FormItem>
-                    )}
                 />
                 <FormField
                     control={form.control}
@@ -197,12 +155,11 @@ export function SleepForm({ open, setOpen }: SleepFormProps) {
                                 type="number"
                                 className="form-input"
                                 {...field}
-                                value={hours === '' ? '' : hours / 60} // Display empty string or hours
-                                onChange={(event) => handleInputChange(event, field)}
+                                onChange={event => field.onChange(+event.target.value)}
                             />
                         </FormControl>
                         <FormDescription>
-                            How long did you sleep?
+                            How long did you exercise?
                         </FormDescription>
                         <FormMessage />
                         </FormItem>
@@ -210,10 +167,10 @@ export function SleepForm({ open, setOpen }: SleepFormProps) {
                 />
                 <FormField
                     control={form.control}
-                    name="quality"
+                    name="calories"
                     render={({ field }) => (
                         <FormItem className="flex flex-col">
-                        <FormLabel>Quality</FormLabel>
+                        <FormLabel>Calories</FormLabel>
                         <FormControl>
                             <Input
                                 type="number"
@@ -223,7 +180,36 @@ export function SleepForm({ open, setOpen }: SleepFormProps) {
                             />
                         </FormControl>
                         <FormDescription>
-                            How well did you sleep?
+                            How many calories did you burn?
+                        </FormDescription>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                        <FormLabel>Type</FormLabel>
+                        <FormControl>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Select an option" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                {cardioTypes.map((type) => (
+                                    <SelectItem key={type} value={type}>
+                                        {type.charAt(0) + type.slice(1).toLowerCase()}
+                                    </SelectItem>
+                                ))}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                        </FormControl>
+                        <FormDescription>
+                            What type of exercise did you do?
                         </FormDescription>
                         <FormMessage />
                         </FormItem>
