@@ -59,6 +59,23 @@ export function CookieModal() {
     const onSubmit = (data: z.infer<typeof schema>) => {
         setLoading(true)
 
+        // if essential cookies are disabled, error 
+        if (!data.essential) {
+            toast({
+                title: "Essential Cookies Required",
+                description: "Essential cookies are required for the website to function properly.",
+                variant: "destructive",
+            })
+            // clear the cookie
+            document.cookie = `cookie=;max-age=0;path=/;`
+            setLoading(false) 
+            // refresh the page
+            setTimeout(() => {
+                window.location.reload()
+            }, 2000)
+            return
+        }
+
         // create a react cookie with the data
         const cookie = {
             essential: data.essential,

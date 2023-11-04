@@ -18,7 +18,6 @@ import {
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
@@ -74,7 +73,7 @@ export function ExerciseForm({ open, setOpen }: ExerciseFormProps) {
         try {
             const session = await getSession()
             const token = session?.user.jwt
-            const res = fetch('/server/metrics/exercise', {
+            await fetch('/server/metrics/exercise', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,7 +86,9 @@ export function ExerciseForm({ open, setOpen }: ExerciseFormProps) {
                 description: "Your exercise has been added.",
             })
             setOpen(false)
-            window.location.reload()
+            setTimeout(() => {
+                window.location.reload()
+            }, 2000)
         } catch (error) {
             toast({
                 title: "Error",
@@ -96,7 +97,7 @@ export function ExerciseForm({ open, setOpen }: ExerciseFormProps) {
         }
         setLoading(false)
     }
-
+    
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   ResponsiveContainer,
   XAxis,
@@ -24,7 +23,11 @@ export function ExerciseChart({ data, xAxis, yAxis }: GraphBarChartProps) {
 
   // Check if there's no data
   if (data.length === 0) {
-    return <p>No exercise data available.</p>;
+    return (
+      <div className="flex items-center justify-center">
+        <p className="text-gray-500 text-sm">No data to display</p>
+      </div>
+    )
   }
 
   // Extract exercise types from the first data point

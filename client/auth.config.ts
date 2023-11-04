@@ -32,7 +32,7 @@ export default {
 
           if (!res.ok) {
             // credentials are invalid
-            return null;
+            throw Error("credentials");
           }
 
           const parsedResponse = await res.json();
@@ -48,6 +48,11 @@ export default {
             },
           });
 
+          if (!user.ok) {
+            // error getting user details
+            throw Error("Error getting user details");
+          }
+
           const parsedUser = await user.json();
 
           return {
@@ -55,8 +60,8 @@ export default {
             jwt,
             user: parsedUser
           };
-        } catch (e) {
-          return null;
+        } catch (e: any) {
+          return Promise.reject(`/auth/login?error=${e.message}`);
         }
       }
     }),
@@ -79,7 +84,8 @@ export default {
       return session;
     },
   },
-  // pages: {
-  //   signIn: '/auth/login',
-  // }
+  pages: {
+    signIn: '/auth/login',
+    error: '/auth/login'
+  }
 }

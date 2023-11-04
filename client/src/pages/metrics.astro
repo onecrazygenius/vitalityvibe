@@ -6,6 +6,10 @@ import { ViewTransitions } from 'astro:transitions';
 import { Sleep } from '@/components/metrics/sleep'
 import { Exercise } from '@/components/metrics/exercise'
 import { Meal } from '@/components/metrics/meal'
+
+import { getSession } from "auth-astro/server"
+let session = await getSession(Astro.request)
+if (!session) return Astro.redirect("/")
 ---
 <Layout
     title="Metrics"

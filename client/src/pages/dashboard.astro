@@ -2,8 +2,6 @@
 import Layout from "@/layouts/Main.astro"
 import { ViewTransitions } from 'astro:transitions';
 
-import { SignOut } from "auth-astro/components"
-
 // Get the session from the request
 import { getSession } from "auth-astro/server"
 let session = await getSession(Astro.request)
@@ -17,18 +15,9 @@ if (!session) return Astro.redirect("/")
     <section class="container">
       <div class="row">
       <div class="col-12 font-bold">
-        <p>
-          Only logged in users can see this page.
-        </p>
-
-        <p>
-          Logged in as {session?.user?.name}
-        </p>
-
-        <p>
-          <a href="/">Home</a>
-          <SignOut>Logout</SignOut>
-        </p>
+        <h1>
+          Dashboard for {session?.user?.name}
+        </h2>
       </div>
       </div>
     </section>

@@ -1,5 +1,4 @@
 import { useEffect } from "react"
-import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { CookieConsent } from "@/components/cookie-consent"
@@ -7,7 +6,6 @@ import { useCookieModal } from "@/hooks/use-cookie-modal"
 
 export function SiteFooter() {
   const onOpen = useCookieModal((state) => state.onOpen);
-  const isOpen = useCookieModal((state) => state.isOpen);
 
   // try get cookie from browser
   useEffect(() => {

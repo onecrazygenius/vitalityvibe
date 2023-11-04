@@ -71,8 +71,7 @@ export function SleepForm({ open, setOpen }: SleepFormProps) {
         try {
             const session = await getSession()
             const token = session?.user.jwt
-            console.log(token)
-            const res = fetch('/server/metrics/sleep', {
+            await fetch('/server/metrics/sleep', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -85,7 +84,9 @@ export function SleepForm({ open, setOpen }: SleepFormProps) {
                 description: "Your sleep has been added.",
             })
             setOpen(false)
-            window.location.reload()
+            setTimeout(() => {
+                window.location.reload()
+            }, 2000)
         } catch (error) {
             toast({
                 title: "Error",

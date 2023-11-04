@@ -73,7 +73,7 @@ export function MealForm({ open, setOpen }: MealFormProps) {
         try {
             const session = await getSession()
             const token = session?.user.jwt
-            const res = fetch('/server/metrics/meal', {
+            await fetch('/server/metrics/meal', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -86,7 +86,9 @@ export function MealForm({ open, setOpen }: MealFormProps) {
                 description: "Meal added.",
             })
             setOpen(false)
-            window.location.reload()
+            setTimeout(() => {
+                window.location.reload()
+            }, 2000)
         } catch (error) {
             toast({
                 title: "Error",

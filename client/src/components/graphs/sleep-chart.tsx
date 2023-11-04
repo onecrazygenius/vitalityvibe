@@ -20,6 +20,16 @@ type GraphBarChartProps = {
 }
 
 export function SleepChart({ data, xAxis, yAxis }: GraphBarChartProps) {
+
+  // Check if there's no data
+  if (data.length === 0) {
+    return (
+      <div className="flex items-center justify-center">
+        <p className="text-gray-500 text-sm">No data to display</p>
+      </div>
+    )
+  }
+
   return (
     <ResponsiveContainer width="100%" height={250}>
       <ComposedChart data={data}>
