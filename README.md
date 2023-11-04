@@ -2,10 +2,10 @@
 
 Welcome to the Vitality Vibe project. 
 
-### Client (Next.JS)
+### Client (Astro.JS)
 - `bun install` - Install dependencies
 - `bun --bun run dev` - Run the project in development
-- `bun start` - Run the project in production
+- `bun ./dist/server/entry.mjs` - Run the project in production
 
 ### Docker
 - `docker-compose up --build` - Build and run the container
@@ -17,12 +17,6 @@ Welcome to the Vitality Vibe project.
 - `mvn spring-boot:run` - Run the project
 
 ## Test commands
-
-### API (Curl)
-
-#### Auth
-Login
-- `curl -X POST -H "Content-Type: application/json" -d '{"username":"user","password":"user"}' http://localhost:8080/auth/token`
-
-Register
-- `curl -X POST -H "Content-Type: application/json" -d '{"username":"user","password":"user","email":"user@user"}' http://localhost:8080/auth/signup`
+- `mvn test` - Run all tests
+- `mvn test -Dtest=TestClassName` - Run a specific test class
+- `mvn test -Dtest=TestClassName#testMethodName` - Run a specific test method
