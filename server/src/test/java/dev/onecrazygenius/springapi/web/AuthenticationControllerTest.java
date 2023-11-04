@@ -27,7 +27,7 @@ class AuthenticationControllerTest {
         this.mockMvc.perform(
             post("/api/v1/auth/register")
             .contentType("application/json")
-            .content("{\"firstname\":\"Magnus\",\"lastname\":\"Carlsen\",\"email\":\"magnus.carlsen@chess.com\",\"password\":\"Password!1\",\"role\":\"ADMIN\"}")
+            .content("{\"displayname\":\"Magnus Carlsen\",\"email\":\"magnus.carlsen@chess.com\",\"password\":\"Password!1\",\"role\":\"ADMIN\"}")
         ).andDo(print())
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("access_token")))
