@@ -30,16 +30,15 @@ jobs:
   server-test:
     runs-on: ubuntu-latest
     services:
-      mysql:
-        image: mysql:8.0
+      postgres:
+        image: postgres:latest
         env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_USER: vitalityvibe
-          MYSQL_PASSWORD: password
-          MYSQL_DATABASE: vitalityvibe
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: vitalityvibe
         ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - uses: actions/checkout@v3
@@ -52,4 +51,4 @@ jobs:
 
       - name: Test with Maven
         working-directory: server
-        run: mvn -B test --file pom.xml
+        run: mvn test
