@@ -48,19 +48,21 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
             email,
             password,
             redirect: false,
-            callbackUrl: `${window.location.origin}/dashboard`
-        })
-        setIsLoading(false);
+        });
         toast({
             title: "Success",
             description: "You have successfully logged in.",
-            duration: 5000,
         });
-        window.location.href = `${window.location.origin}/dashboard`;
+
+        // redirect after 1 second
+        setTimeout(() => {
+            window.location.href = "/";
+        }, 1000);
     } catch (error) {
         toast({
             title: "Error",
             description: "There was an error logging in.",
+            variant: "destructive",
             duration: 3000,
         });
     }

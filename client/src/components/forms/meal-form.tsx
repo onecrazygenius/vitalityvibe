@@ -86,7 +86,9 @@ export function MealForm({ open, setOpen }: MealFormProps) {
                 description: "Meal added.",
             })
             setOpen(false)
-            window.location.reload()
+            setTimeout(() => {
+                window.location.reload()
+            }, 2000)
         } catch (error) {
             toast({
                 title: "Error",

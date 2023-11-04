@@ -87,7 +87,9 @@ export function ExerciseForm({ open, setOpen }: ExerciseFormProps) {
                 description: "Your exercise has been added.",
             })
             setOpen(false)
-            window.location.reload()
+            setTimeout(() => {
+                window.location.reload()
+            }, 2000)
         } catch (error) {
             toast({
                 title: "Error",
@@ -96,7 +98,7 @@ export function ExerciseForm({ open, setOpen }: ExerciseFormProps) {
         }
         setLoading(false)
     }
-
+    
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

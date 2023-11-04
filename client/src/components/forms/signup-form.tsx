@@ -75,10 +75,14 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
 
       toast({
         title: "Account Created",
-        description: "You have signed up!",
+        description: "You have signed up - Now Login!",
         duration: 5000,
       });
-      window.location.href = "/dashboard";
+
+      setTimeout(() => {
+        window.location.href = `${window.location.origin}/auth/login`;
+      }, 2000);
+      
     } catch (error) {
       toast({
         title: "Error",

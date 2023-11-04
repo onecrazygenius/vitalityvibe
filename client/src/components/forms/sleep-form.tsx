@@ -85,7 +85,9 @@ export function SleepForm({ open, setOpen }: SleepFormProps) {
                 description: "Your sleep has been added.",
             })
             setOpen(false)
-            window.location.reload()
+            setTimeout(() => {
+                window.location.reload()
+            }, 2000)
         } catch (error) {
             toast({
                 title: "Error",

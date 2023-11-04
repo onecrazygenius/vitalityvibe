@@ -7,6 +7,15 @@ type MealChartProps = {
 
 export function MealChart({ data }: MealChartProps) {
 
+  // Check if there's no data
+  if (data.length === 0) {
+    return (
+      <div className="flex items-center justify-center">
+        <p className="text-gray-500 text-sm">No data to display</p>
+      </div>
+    )
+  }
+
   return (
     <PieChart width={400} height={250}>
       <Pie
