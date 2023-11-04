@@ -71,8 +71,7 @@ export function SleepForm({ open, setOpen }: SleepFormProps) {
         try {
             const session = await getSession()
             const token = session?.user.jwt
-            console.log(token)
-            const res = fetch('/server/metrics/sleep', {
+            await fetch('/server/metrics/sleep', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

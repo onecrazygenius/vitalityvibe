@@ -73,7 +73,7 @@ export function MealForm({ open, setOpen }: MealFormProps) {
         try {
             const session = await getSession()
             const token = session?.user.jwt
-            const res = fetch('/server/metrics/meal', {
+            await fetch('/server/metrics/meal', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

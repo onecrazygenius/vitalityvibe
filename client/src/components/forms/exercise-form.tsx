@@ -18,7 +18,6 @@ import {
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
@@ -74,7 +73,7 @@ export function ExerciseForm({ open, setOpen }: ExerciseFormProps) {
         try {
             const session = await getSession()
             const token = session?.user.jwt
-            const res = fetch('/server/metrics/exercise', {
+            await fetch('/server/metrics/exercise', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

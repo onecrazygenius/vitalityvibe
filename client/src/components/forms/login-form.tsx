@@ -44,7 +44,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     const { email, password } = values;
 
     try {
-        const result = await signIn('credentials', {
+        await signIn('credentials', {
             email,
             password,
             redirect: false,

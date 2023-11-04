@@ -1,5 +1,10 @@
-import React from 'react';
-import { PieChart, Pie, Tooltip, Legend, Cell } from 'recharts';
+import { 
+  PieChart, 
+  Pie, 
+  Tooltip, 
+  Legend, 
+  Cell 
+} from 'recharts';
 
 type MealChartProps = {
   data: any[];
