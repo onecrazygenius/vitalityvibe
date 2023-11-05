@@ -21,6 +21,8 @@ export function MealChart({ data }: MealChartProps) {
     )
   }
 
+  console.log(data)
+
   return (
     <PieChart width={400} height={250}>
       <Pie

@@ -35,8 +35,8 @@ export function Meal() {
       });
 
       // Group meals by type and calculate total calories and descriptions
-      const mealTypeData = {};
-      mealsForCurrentDate.forEach((meal) => {
+      const mealTypeData: any = {};
+      mealsForCurrentDate.forEach((meal: any) => {
         const mealType = meal.type;
         const calories = meal.calories;
         const description = meal.description;
@@ -44,11 +44,12 @@ export function Meal() {
         if (!mealTypeData[mealType]) {
           mealTypeData[mealType] = {
             calories: 0,
-            description: description,
+            description: "",
           };
         }
 
         mealTypeData[mealType].calories += calories;
+        mealTypeData[mealType].description += description + "\n";
       });
 
       // Convert the grouped data into an array for the pie chart
@@ -57,6 +58,7 @@ export function Meal() {
         value: mealTypeData[mealType].calories,
         description: mealTypeData[mealType].description,
       }));
+
       setMeal(pieData)
     }
     fetchMeal()

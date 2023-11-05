@@ -56,6 +56,14 @@ export function Sleep() {
           bad: Math.round((duration - good) * 100) / 100,
         }
       })
+
+      // sort by date
+      sleepData.sort((a: any, b: any) => {
+        const dateA = new Date(a.date)
+        const dateB = new Date(b.date)
+        return dateA.getTime() - dateB.getTime()
+      })
+
       setSleep(sleepData)
     }
     fetchSleep()
